@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.solveur7erreurs"
         minSdkVersion 21
@@ -25,7 +25,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //noinspection GradleCompatible
     implementation 'com.android.support:design:28.0.0'
-    implementation files('libs/awt-13.0.jar')
-    implementation files('libs/ae-awt.jar')
+    api files('libs/awt-13.0.jar')
+    api files('libs/ae-awt.jar')
 }
