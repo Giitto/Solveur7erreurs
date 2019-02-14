@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Solveur7erreurs</string>
+    <string name="play">PLAY</string>
+    <string name="ExplicationP2">Explication sur le choix des images</string>
+    <string name="IMAGE2">IMAGE2</string>
+    <string name="IMAGE1">IMAGE1</string>
+    <string name="LANCER">Lancer Comparaison</string>
+
+</resources>
