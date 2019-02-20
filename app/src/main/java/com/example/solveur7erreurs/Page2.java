@@ -20,8 +20,8 @@ import android.widget.Toast;
 public class Page2 extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST = 0;
-    private static String chemin;
-    private static String chemin2;
+    private static String chemin = null;
+    private static String chemin2 = null;
     private int RESULT_LOAD_IMAGE = 0;
 
 
