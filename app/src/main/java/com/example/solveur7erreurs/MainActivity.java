@@ -7,10 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+//Classe de la page d'accueil
+
 public class MainActivity extends AppCompatActivity {
 
-    private LinearLayout layoutP1;
-    private Button play;
+    private LinearLayout layoutP1;          //Initialisation du layout
+    private Button play;                    //Initialisation du bouton de lancement de l'application
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,9 +21,11 @@ public class MainActivity extends AppCompatActivity {
 
         this.layoutP1 = findViewById(R.id.LayoutPage1);
 
-        this.play = findViewById(R.id.angry_btn);
+        play = findViewById(R.id.angry_btn);
         play.setOnClickListener(new View.OnClickListener() {
             @Override
+
+            /*Fonction de changement de page au clic sur le bouton play*/
             public void onClick(View v) {
                 Intent page2 = new Intent(getApplicationContext(), Page2.class);
                 startActivity(page2);
