@@ -27,8 +27,8 @@ public class Page3 extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent panDessin = new Intent(getApplicationContext(), PanDessin.class);
-                startActivity(panDessin);
+                Intent page4 = new Intent(getApplicationContext(), Page4.class);
+                startActivity(page4);
                 finish();
             }
         });
