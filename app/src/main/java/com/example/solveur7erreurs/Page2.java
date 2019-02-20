@@ -1,5 +1,5 @@
 package com.example.solveur7erreurs;
-
+//import pour l'import image dans galerie
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+//Implementation de la page 2
 public class Page2 extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST = 0;
@@ -30,7 +31,7 @@ public class Page2 extends AppCompatActivity {
     Button button2;
     Button comparer;
 
-
+    //Recuperation du chemin des deux images
     public static String getChemin(int i) {
         if(i==1)
             return chemin;
@@ -43,18 +44,22 @@ public class Page2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page2);
-
+        //Demande de permission d'accès à la galerie du telephone
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST);
 
         }
 
+        //Recherche des attributs by ID
         imageView = findViewById(R.id.imageView);
         imageView2 = findViewById(R.id.imageView2);
         button = findViewById(R.id.button);
         button2 = findViewById(R.id.button2);
+        comparer = findViewById(R.id.angry_btn2);
 
+
+        //Fonction onClick du bouton Image n°1
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,7 +68,7 @@ public class Page2 extends AppCompatActivity {
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
-
+        //Fonction onClick du bouton Image n°2
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +79,7 @@ public class Page2 extends AppCompatActivity {
             }
         });
 
-        this.comparer = findViewById(R.id.angry_btn2);
+        // Fonction onClick pour Page 3
         comparer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +91,7 @@ public class Page2 extends AppCompatActivity {
 
     }
 
+    //Fonction d'accès galerie
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -100,6 +106,7 @@ public class Page2 extends AppCompatActivity {
 
     }
 
+    //Fonction d'import des deux images
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -110,7 +117,9 @@ public class Page2 extends AppCompatActivity {
                 {
                     Uri selectedImage = data.getData();
                     String[] filePathColumn1 ={MediaStore.Images.Media.DATA};
+                    assert selectedImage != null;
                     Cursor cursor = getContentResolver().query(selectedImage, filePathColumn1, null,null,null);
+                    assert cursor != null;
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn1[0]);
                     String picturePath = cursor.getString(columnIndex);
@@ -124,7 +133,9 @@ public class Page2 extends AppCompatActivity {
                 if(resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
                     String[] filePathColumn ={MediaStore.Images.Media.DATA};
+                    assert selectedImage != null;
                     Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null,null,null);
+                    assert cursor != null;
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     String picturePath = cursor.getString(columnIndex);
