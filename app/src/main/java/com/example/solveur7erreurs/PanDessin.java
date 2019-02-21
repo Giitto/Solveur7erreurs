@@ -26,7 +26,8 @@ public class PanDessin  extends AppCompatActivity{
         int matrice1[][][];
         int matrice2[][][];
 
-        public PanDessin() {
+
+    public PanDessin() {
         super();
             numMat = 0;
 
@@ -124,7 +125,7 @@ public class PanDessin  extends AppCompatActivity{
 //		repaint();
         }
 
-        public  void ajouterImage(File fichierImage) { // desiner une image a l'ecran
+        public void ajouterImage(File fichierImage) { // desiner une image a l'ecran
             try {
                 monImage = ImageIO.read(fichierImage);
             } catch (IOException e) {
@@ -276,4 +277,6 @@ public class PanDessin  extends AppCompatActivity{
             return matTmp;
 
         }
+
+
     }

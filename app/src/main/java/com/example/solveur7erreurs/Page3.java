@@ -6,24 +6,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.IOException;
-
-import ae.java.awt.Image;
-
-import static ae.javax.imageio.ImageIO.read;
 
 
-public class Page3 extends AppCompatActivity {
+public class Page3 extends AppCompatActivity{
 
 
     String chemin1 = Page2.getChemin(1);
     String chemin2 = Page2.getChemin(2);
-    Image image = read(new File(chemin1));;
     TextView textView3;
     ImageView result;
-
-    public Page3() throws IOException {
-    }
+    private final PanDessin panneau = new PanDessin();
+    File file = new File(chemin1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +25,9 @@ public class Page3 extends AppCompatActivity {
         textView3 = findViewById(R.id.textView3);
         textView3.setText(chemin1 + '\n' + chemin2);
         result = findViewById(R.id.imageView3);
-        PanDessin.ajouterImage(image);
+        panneau.ajouterImage(file);
+        panneau.imageEclaircie();
+
 
     }
 
