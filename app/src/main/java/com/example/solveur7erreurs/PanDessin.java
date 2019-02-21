@@ -109,7 +109,7 @@ public class PanDessin extends AppCompatActivity {
         assombrir.filter(monImage, imgSombre);
         monImage = imgSombre;
         System.out.println("assombrir effectuee");
-        invalidate();
+        repaint();
     }
 
     protected void imageBinaire()
