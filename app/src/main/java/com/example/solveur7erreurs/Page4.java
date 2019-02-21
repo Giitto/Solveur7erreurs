@@ -11,6 +11,7 @@ import ae.java.awt.event.ActionListener;
 
 public class Page4 extends JFrame {
 
+
     private final JMenuBar menuBar = new JMenuBar();
     private final JMenu fichierMenu = new JMenu();
     private final JMenuItem ouvrirMenu = new JMenuItem();
