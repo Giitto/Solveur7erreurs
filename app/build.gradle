@@ -16,7 +16,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    sourceSets { main { jni.srcDirs = ['src/main/jni', 'src/main/jniLibs/'] } }
 }
 
 dependencies {
@@ -30,5 +29,4 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     api files('libs/awt-13.0.jar')
     api files('libs/ae-awt.jar')
-    implementation project(':java')
 }
