@@ -1,134 +1,206 @@
-/*package com.example.solveur7erreurs;
+package com.example.solveur7erreurs;
 
 import android.support.v7.app.AppCompatActivity;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
-import javax.swing.JFrame;
+import ae.java.awt.image.BufferedImage;
+import ae.java.awt.image.DataBufferByte;
+import ae.java.awt.image.DataBufferInt;
 
-import ae.java.awt.event.ActionEvent;
-import ae.java.awt.event.ActionListener;
+/**
+ * Utility class for loading windows bitmap files
+ * <p>
+ * Based on code from author Abdul Bezrati and Pepijn Van Eeckhoudt
+ */
+public class Page4 extends AppCompatActivity {
 
-public class Page4 extends JFrame {
-
-    private final JMenuBar menuBar = new JMenuBar();
-    private final JMenu fichierMenu = new JMenu();
-    private final JMenuItem ouvrirMenu = new JMenuItem();
-    private final JMenu filtreMenu = new JMenu();
-    private final PanDessin panneau = new PanDessin();
-    private final JMenuItem enregistrerMenu = new JMenuItem();
-    private final JMenuItem niveauGrisMenu = new JMenuItem();
-    private final JMenuItem assombrirMenu = new JMenuItem();
-    private final JMenuItem brillanceMenu = new JMenuItem();
-    private final JMenuItem binarisationMenu = new JMenuItem();
-    private final JMenuItem convolutionMenu = new JMenuItem();
-    private final JMenu retaillerMenu = new JMenu();
-    private final JMenuItem agrandirMenu = new JMenuItem();
-    private final JMenuItem reduireMenu = new JMenuItem();
-
-
-    public Page4() {
-        super();
-        setBounds(100, 100, 500, 375);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    /**
+     * Static method to load a bitmap file based on the filename passed in.
+     * Based on the bit count, this method will either call the 8 or 24 bit
+     * bitmap reader methods
+     *
+     * @param file The name of the bitmap file to read
+     * @throws IOException
+     * @return A BufferedImage of the bitmap
+     */
+    public static BufferedImage loadBitmap(String file) throws IOException {
+        BufferedImage image;
+        InputStream input = null;
         try {
-            creerMenu();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        //
-    }
-    private void creerMenu() throws Exception {
+            input = ResourceRetriever.getResourceAsStream(file);
 
-        // construction du menu
-        setJMenuBar(menuBar);
-        menuBar.add(fichierMenu);
-        fichierMenu.setText("Fichier");
-        fichierMenu.add(ouvrirMenu);
-        ouvrirMenu.addActionListener((ActionListener)this);
-        ouvrirMenu.setText("ouvrir");
+            int bitmapFileHeaderLength = 14;
+            int bitmapInfoHeaderLength = 40;
 
-        fichierMenu.add(enregistrerMenu);
-        enregistrerMenu.addActionListener((ActionListener)this);
-        enregistrerMenu.setText("enregistrer");
-        menuBar.add(filtreMenu);
-        filtreMenu.setText("Filtre");
+            byte bitmapFileHeader[] = new byte[bitmapFileHeaderLength];
+            byte bitmapInfoHeader[] = new byte[bitmapInfoHeaderLength];
 
-        filtreMenu.add(niveauGrisMenu);
-        niveauGrisMenu.addActionListener((ActionListener)this);
-        niveauGrisMenu.setText("niveau de gris");
+            input.read(bitmapFileHeader, 0, bitmapFileHeaderLength);
+            input.read(bitmapInfoHeader, 0, bitmapInfoHeaderLength);
 
-        filtreMenu.add(binarisationMenu);
-        binarisationMenu.addActionListener((ActionListener)this);
-        binarisationMenu.setText("binarisation");
+            int nSize = bytesToInt(bitmapFileHeader, 2);
+            int nWidth = bytesToInt(bitmapInfoHeader, 4);
+            int nHeight = bytesToInt(bitmapInfoHeader, 8);
+            int nBiSize = bytesToInt(bitmapInfoHeader, 0);
+            int nPlanes = bytesToShort(bitmapInfoHeader, 12);
+            int nBitCount = bytesToShort(bitmapInfoHeader, 14);
+            int nSizeImage = bytesToInt(bitmapInfoHeader, 20);
+            int nCompression = bytesToInt(bitmapInfoHeader, 16);
+            int nColoursUsed = bytesToInt(bitmapInfoHeader, 32);
+            int nXPixelsMeter = bytesToInt(bitmapInfoHeader, 24);
+            int nYPixelsMeter = bytesToInt(bitmapInfoHeader, 28);
+            int nImportantColours = bytesToInt(bitmapInfoHeader, 36);
 
-        filtreMenu.add(assombrirMenu);
-        assombrirMenu.addActionListener((ActionListener)this);
-        assombrirMenu.setText("assombrir");
-
-        filtreMenu.add(brillanceMenu);
-        brillanceMenu.addActionListener((ActionListener)this);
-        brillanceMenu.setText("brillance");
-
-        filtreMenu.add(convolutionMenu);
-        convolutionMenu.addActionListener((ActionListener)this);
-        convolutionMenu.setText("convolution");
-
-        menuBar.add(retaillerMenu);
-        retaillerMenu.setText("retailler");
-
-        retaillerMenu.add(agrandirMenu);
-        agrandirMenu.addActionListener((ActionListener)this);
-        agrandirMenu.setText("agrandir");
-
-        retaillerMenu.add(reduireMenu);
-        reduireMenu.addActionListener((ActionListener)this);
-        reduireMenu.setText("reduire");
-
-        // ajouter le panneau de dessin
-        getContentPane().add(panneau);
-    }
-    public void actionPerformed(ActionEvent cliqueMenu) {
-        if (cliqueMenu.getSource().equals(ouvrirMenu))
-        {
-            JFileChooser fileOuvrirImage = new JFileChooser();
-            if (fileOuvrirImage.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                panneau.ajouterImage(new File(fileOuvrirImage.getSelectedFile()
-                        .getAbsolutePath()));
+            if (nBitCount == 24) {
+                image = read24BitBitmap(nSizeImage, nHeight, nWidth, input);
+            } else if (nBitCount == 8) {
+                image = read8BitBitmap(nColoursUsed, nBitCount, nSizeImage, nWidth, nHeight, input);
+            } else {
+                System.out.println("Not a 24-bit or 8-bit Windows Bitmap, aborting...");
+                image = null;
             }
-        } else if (cliqueMenu.getSource().equals(enregistrerMenu)) {
-            JFileChooser fileEnregistrerImage = new JFileChooser();
-            if (fileEnregistrerImage.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                File fichierEnregistrement = new File(fileEnregistrerImage.getSelectedFile().getAbsolutePath()+ ".JPG");
-                panneau.enregistrerImage(fichierEnregistrement);
+        } finally {
+            try {
+                if (input != null)
+                    input.close();
+            } catch (IOException e) {
             }
-        } else
-        if (cliqueMenu.getSource().equals(niveauGrisMenu)) {
-            panneau.imageEnNiveauGris();
-        } else if (cliqueMenu.getSource().equals(brillanceMenu)) {
-            panneau.imageEclaircie();
-        } else if (cliqueMenu.getSource().equals(binarisationMenu)) {
-            panneau.imageBinaire();
-        } else if (cliqueMenu.getSource().equals(convolutionMenu)) {
-            panneau.imageConvolue();
-            System.out.println("appel convolution");
-        } else if (cliqueMenu.getSource().equals(agrandirMenu)) {
-            panneau.agrandirImage();
-        } else if (cliqueMenu.getSource().equals(reduireMenu)) {
-            panneau.reduireImage();
-        }else if(cliqueMenu.getSource().equals(assombrirMenu)){
-            panneau.imageSombre();
         }
+        return image;
     }
 
-    public static void main(String args[])
-    {
-        try {
-            Page4 frame = new Page4();
-            frame.setVisible(true);
-        } catch (Exception e) {
-            e.printStackTrace();
+    /**
+     * Static method to read a 8 bit bitmap
+     *
+     * @param nColoursUsed Number of colors used
+     * @param nBitCount The bit count
+     * @param nSizeImage The size of the image in bytes
+     * @param nWidth The width of the image
+     * @param input The input stream corresponding to the image
+     * @throws IOException
+     * @return A BufferedImage of the bitmap
+     */
+    private static BufferedImage read8BitBitmap(int nColoursUsed, int nBitCount, int nSizeImage, int nWidth, int nHeight, InputStream input) throws IOException {
+        int nNumColors = (nColoursUsed > 0) ? nColoursUsed : (1 & 0xff) << nBitCount;
+
+        if (nSizeImage == 0) {
+            nSizeImage = ((((nWidth * nBitCount) + 31) & ~31) >> 3);
+            nSizeImage *= nHeight;
+        }
+
+        int npalette[] = new int[nNumColors];
+        byte bpalette[] = new byte[nNumColors * 4];
+        readBuffer(input, bpalette);
+        int nindex8 = 0;
+
+        for (int n = 0; n < nNumColors; n++) {
+            npalette[n] = (255 & 0xff) << 24 |
+                    (bpalette[nindex8 + 2] & 0xff) << 16 |
+                    (bpalette[nindex8 + 1] & 0xff) << 8 |
+                    (bpalette[nindex8 + 0] & 0xff);
+
+            nindex8 += 4;
+        }
+
+        int npad8 = (nSizeImage / nHeight) - nWidth;
+        BufferedImage bufferedImage = new BufferedImage(nWidth, nHeight, BufferedImage.TYPE_INT_ARGB);
+        DataBufferInt dataBufferByte = ((DataBufferInt) bufferedImage.getRaster().getDataBuffer());
+        int[][] bankData = dataBufferByte.getBankData();
+        byte bdata[] = new byte[(nWidth + npad8) * nHeight];
+
+        readBuffer(input, bdata);
+        nindex8 = 0;
+
+        for (int j8 = nHeight - 1; j8 >= 0; j8--) {
+            for (int i8 = 0; i8 < nWidth; i8++) {
+                bankData[0][j8 * nWidth + i8] = npalette[((int) bdata[nindex8] & 0xff)];
+                nindex8++;
+            }
+            nindex8 += npad8;
+        }
+
+        return bufferedImage;
+    }
+
+    /**
+     * Static method to read a 24 bit bitmap
+     *
+     * @param nSizeImage size of the image  in bytes
+     * @param nHeight The height of the image
+     * @param nWidth The width of the image
+     * @param input The input stream corresponding to the image
+     * @throws IOException
+     * @return A BufferedImage of the bitmap
+     */
+    private static BufferedImage read24BitBitmap(int nSizeImage, int nHeight, int nWidth, InputStream input) throws IOException {
+        int npad = (nSizeImage / nHeight) - nWidth * 3;
+        if (npad == 4 || npad < 0)
+            npad = 0;
+        int nindex = 0;
+        BufferedImage bufferedImage = new BufferedImage(nWidth, nHeight, BufferedImage.TYPE_4BYTE_ABGR);
+        DataBufferByte dataBufferByte = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer());
+        byte[][] bankData = dataBufferByte.getBankData();
+        byte brgb[] = new byte[(nWidth + npad) * 3 * nHeight];
+
+        readBuffer(input, brgb);
+
+        for (int j = nHeight - 1; j >= 0; j--) {
+            for (int i = 0; i < nWidth; i++) {
+                int base = (j * nWidth + i) * 4;
+                bankData[0][base] = (byte) 255;
+                bankData[0][base + 1] = brgb[nindex];
+                bankData[0][base + 2] = brgb[nindex + 1];
+                bankData[0][base + 3] = brgb[nindex + 2];
+                nindex += 3;
+            }
+            nindex += npad;
+        }
+
+        return bufferedImage;
+    }
+
+    /**
+     * Converts bytes to an int
+     *
+     * @param bytes An array of bytes
+     * @param index
+     * @returns A int representation of the bytes
+     */
+    private static int bytesToInt(byte[] bytes, int index) {
+        return (bytes[index + 3] & 0xff) << 24 |
+                (bytes[index + 2] & 0xff) << 16 |
+                (bytes[index + 1] & 0xff) << 8 |
+                bytes[index + 0] & 0xff;
+    }
+
+    /**
+     * Converts bytes to a short
+     *
+     * @param bytes An array of bytes
+     * @param index
+     * @returns A short representation of the bytes
+     */
+    private static short bytesToShort(byte[] bytes, int index) {
+        return (short) (((bytes[index + 1] & 0xff) << 8) |
+                (bytes[index + 0] & 0xff));
+    }
+
+    /**
+     * Reads the buffer
+     *
+     * @param in An InputStream
+     * @param buffer An array of bytes
+     * @throws IOException
+     */
+    private static void readBuffer(InputStream in, byte[] buffer) throws IOException {
+        int bytesRead = 0;
+        int bytesToRead = buffer.length;
+        while (bytesToRead > 0) {
+            int read = in.read(buffer, bytesRead, bytesToRead);
+            bytesRead += read;
+            bytesToRead -= read;
         }
     }
 }
-*/

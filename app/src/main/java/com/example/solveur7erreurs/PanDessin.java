@@ -5,23 +5,20 @@ import android.support.v7.app.AppCompatActivity;
 import java.io.File;
 import java.io.IOException;
 
-import ae.java.awt.Color;
 import ae.java.awt.Graphics;
 import ae.java.awt.Graphics2D;
 import ae.java.awt.geom.AffineTransform;
 import ae.java.awt.image.AffineTransformOp;
 import ae.java.awt.image.BufferedImage;
-import ae.java.awt.image.ColorModel;
 import ae.java.awt.image.ConvolveOp;
 import ae.java.awt.image.Kernel;
-import ae.java.awt.image.Raster;
 import ae.java.awt.image.RescaleOp;
 import ae.javax.imageio.ImageIO;
 
 
 public class PanDessin  extends AppCompatActivity{
 
-        BufferedImage monImage = null;
+        BufferedImage monImage;
         int numMat;
         int matrice1[][][];
         int matrice2[][][];
@@ -31,7 +28,8 @@ public class PanDessin  extends AppCompatActivity{
         super();
             numMat = 0;
 
-        }
+        monImage = null;
+    }
 
         public void paintComponent(Graphics g) {
 //		super.paintComponent(g);
@@ -131,7 +129,7 @@ public class PanDessin  extends AppCompatActivity{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+    /*
             ///////////////// ajout & modif du 24 janvier 2019
 
             // Extraction du raster de monImage (Rappel: monImage de type BufferedImage est
@@ -204,7 +202,7 @@ public class PanDessin  extends AppCompatActivity{
 
             /////////////////
 //		repaint();
-
+*/
         }
 
         public BufferedImage getImagePanneau() { // recuperer une image du panneau
@@ -213,12 +211,12 @@ public class PanDessin  extends AppCompatActivity{
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = image.createGraphics();
 
-//		this.paintAll(g);
+            //this.paint(g);
             g.dispose();
             return image;
         }
 
-        public void enregistrerImage(File fichierImage) {
+        public File enregistrerImage(File fichierImage) {
             String format = "JPG";
             BufferedImage image = getImagePanneau();
             try {
@@ -226,7 +224,7 @@ public class PanDessin  extends AppCompatActivity{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+            return fichierImage;
         }
 
         public int[][][] soustrMat(int[][][] matA, int[][][] matB) {
