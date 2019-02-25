@@ -1,4 +1,4 @@
-package com.example.solveur7erreurs;
+/*package com.example.solveur7erreurs;
 
 import android.support.v7.app.AppCompatActivity;
 
@@ -14,7 +14,7 @@ import ae.java.awt.image.DataBufferInt;
  * <p>
  * Based on code from author Abdul Bezrati and Pepijn Van Eeckhoudt
  */
-public class Page4 extends AppCompatActivity {
+//public class Page4 extends AppCompatActivity {
 
     /**
      * Static method to load a bitmap file based on the filename passed in.
@@ -25,7 +25,7 @@ public class Page4 extends AppCompatActivity {
      * @throws IOException
      * @return A BufferedImage of the bitmap
      */
-    public static BufferedImage loadBitmap(String file) throws IOException {
+   /* public static BufferedImage loadBitmap(String file) throws IOException {
         BufferedImage image;
         InputStream input = null;
         try {
@@ -82,7 +82,7 @@ public class Page4 extends AppCompatActivity {
      * @throws IOException
      * @return A BufferedImage of the bitmap
      */
-    private static BufferedImage read8BitBitmap(int nColoursUsed, int nBitCount, int nSizeImage, int nWidth, int nHeight, InputStream input) throws IOException {
+    /*private static BufferedImage read8BitBitmap(int nColoursUsed, int nBitCount, int nSizeImage, int nWidth, int nHeight, InputStream input) throws IOException {
         int nNumColors = (nColoursUsed > 0) ? nColoursUsed : (1 & 0xff) << nBitCount;
 
         if (nSizeImage == 0) {
@@ -134,7 +134,7 @@ public class Page4 extends AppCompatActivity {
      * @throws IOException
      * @return A BufferedImage of the bitmap
      */
-    private static BufferedImage read24BitBitmap(int nSizeImage, int nHeight, int nWidth, InputStream input) throws IOException {
+    /*private static BufferedImage read24BitBitmap(int nSizeImage, int nHeight, int nWidth, InputStream input) throws IOException {
         int npad = (nSizeImage / nHeight) - nWidth * 3;
         if (npad == 4 || npad < 0)
             npad = 0;
@@ -168,7 +168,7 @@ public class Page4 extends AppCompatActivity {
      * @param index
      * @returns A int representation of the bytes
      */
-    private static int bytesToInt(byte[] bytes, int index) {
+   /* private static int bytesToInt(byte[] bytes, int index) {
         return (bytes[index + 3] & 0xff) << 24 |
                 (bytes[index + 2] & 0xff) << 16 |
                 (bytes[index + 1] & 0xff) << 8 |
@@ -182,7 +182,7 @@ public class Page4 extends AppCompatActivity {
      * @param index
      * @returns A short representation of the bytes
      */
-    private static short bytesToShort(byte[] bytes, int index) {
+    /*private static short bytesToShort(byte[] bytes, int index) {
         return (short) (((bytes[index + 1] & 0xff) << 8) |
                 (bytes[index + 0] & 0xff));
     }
@@ -194,7 +194,7 @@ public class Page4 extends AppCompatActivity {
      * @param buffer An array of bytes
      * @throws IOException
      */
-    private static void readBuffer(InputStream in, byte[] buffer) throws IOException {
+   /* private static void readBuffer(InputStream in, byte[] buffer) throws IOException {
         int bytesRead = 0;
         int bytesToRead = buffer.length;
         while (bytesToRead > 0) {
@@ -203,4 +203,4 @@ public class Page4 extends AppCompatActivity {
             bytesToRead -= read;
         }
     }
-}
+}*/
