@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -16,12 +17,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 //Implementation de la page 2
 public class Page2 extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST = 0;
-    private static String chemin = null;
-    private static String chemin2 = null;
+    private static Bitmap bitmap;
+    private static Bitmap bitmap2;
+
     private int RESULT_LOAD_IMAGE = 0;
 
 
@@ -32,11 +36,11 @@ public class Page2 extends AppCompatActivity {
     Button comparer;
 
     //Recuperation du chemin des deux images
-    public static String getChemin(int i) {
+    public static Bitmap getBitmap(int i) {
         if(i==1)
-            return chemin;
+            return bitmap;
         else
-            return chemin2;
+            return bitmap2;
     }
 
 
@@ -116,6 +120,11 @@ public class Page2 extends AppCompatActivity {
                 if(resultCode == RESULT_OK)
                 {
                     Uri selectedImage = data.getData();
+                    try {
+                        bitmap  = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     String[] filePathColumn1 ={MediaStore.Images.Media.DATA};
                     assert selectedImage != null;
                     Cursor cursor = getContentResolver().query(selectedImage, filePathColumn1, null,null,null);
@@ -123,7 +132,6 @@ public class Page2 extends AppCompatActivity {
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn1[0]);
                     String picturePath = cursor.getString(columnIndex);
-                    chemin = picturePath;
                     cursor.close();
                     imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
@@ -132,6 +140,11 @@ public class Page2 extends AppCompatActivity {
             case  2 :
                 if(resultCode == RESULT_OK) {
                     Uri selectedImage = data.getData();
+                    try {
+                        bitmap2  = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     String[] filePathColumn ={MediaStore.Images.Media.DATA};
                     assert selectedImage != null;
                     Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null,null,null);
@@ -139,7 +152,6 @@ public class Page2 extends AppCompatActivity {
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                     String picturePath = cursor.getString(columnIndex);
-                    chemin2 = picturePath;
                     cursor.close();
                     imageView2.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                 }
