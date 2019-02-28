@@ -19,7 +19,7 @@ import static android.graphics.Bitmap.createBitmap;
 public class Page3 extends AppCompatActivity{
 
 
-    Bitmap image1[][] = createBitmap(Page2.transBitmap(1));
+    //Bitmap image1[][] = createBitmap(Page2.transBitmap(1));
     Bitmap image2 = createBitmap(Page2.transBitmap(2));
     TextView textView3;
     ImageView result;
@@ -30,44 +30,22 @@ public class Page3 extends AppCompatActivity{
         setContentView(R.layout.activity_page3);
         textView3 = findViewById(R.id.textView3);
         result = findViewById(R.id.imageView3);
-        textView3.setText(image1.toString());
+        textView3.setText(image2.toString());
 
-
-        result.setImageBitmap((image1));
+        Bitmap tuc = RotateBitmap(image2, 90);
+        result.setImageBitmap((tuc));
 
     }
 
-    public Bitmap getBitmap(){
-        int alpha = angle;
-        rotateBitmaps(alpha);
 
-        int nWidth = this.getWidth();
-        int nHeight = this.getHeight();
+    //Bitmap source = BitmapFactory.decodeResource(this.getResources(), R.drawable.image2);
 
-        Log.i("DBG", "Save image : "+nWidth+"x"+nHeight);
-
-        Bitmap newBitmap = Bitmap.createBitmap(nWidth, nHeight, image1[0][0].getConfig());
-        Canvas canvas = new Canvas(newBitmap);
-
-        drawOrientedBitmap(canvas, alpha);
-        rotateBitmaps(-1 * alpha);
-        //draw(canvas, new Paint(), nWidth/2, nHeight/2, 1);
-
-        return newBitmap;
-    }
-
-    private void rotateBitmaps(int angle){
-
+    public static Bitmap RotateBitmap(Bitmap source, float angle)
+    {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
-
-        for(int x = 0; x < w; x++){
-            for(int y = 0; y < h; y++){
-                Bitmap tmp = this.getBitmap(x, y);
-                bitmap[x][y] = Bitmap.createBitmap(tmp, 0, 0, tmp.getWidth(), tmp.getHeight(), matrix, true);
-            }
-        }
-
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
+
 
 }
