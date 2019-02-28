@@ -33,6 +33,7 @@ public class Page3 extends AppCompatActivity{
         textView3.setText(image2.toString());
 
         Bitmap tuc = RotateBitmap(image2, 90);
+
         result.setImageBitmap((tuc));
 
     }
