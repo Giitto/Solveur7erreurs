@@ -32,12 +32,11 @@ public class Page3 extends AppCompatActivity{
         result = findViewById(R.id.imageView3);
         textView3.setText(image2.toString());
 
-        Bitmap tuc = RotateBitmap(image2, 90);
-        ConvolutionMatrix matrix = new ConvolutionMatrix(3);
-        matrix.setAll(1);
-        tuc = ConvolutionMatrix.computeConvolution3x3(tuc, matrix);
+        Bitmap tuc = RotateBitmap(image2, 0);
+        /*ConvolutionMatrix matrix = new ConvolutionMatrix(3);
+        matrix.setAll(1);*/
+        tuc = ConvolutionMatrix.boxBlur(tuc);
         result.setImageBitmap((tuc));
-
     }
 
 

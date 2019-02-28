@@ -87,4 +87,44 @@ public class ConvolutionMatrix {
         // final image
         return result;
     }
+
+    public static Bitmap gaussianBlur(Bitmap src) {
+        double [] [] EmbossConfig = new double [] [] {
+                {1, 2, 1},
+                {2, 4, 2},
+                {1, 2, 1}
+        };
+        ConvolutionMatrix convMatrix = new ConvolutionMatrix (3);
+        convMatrix.applyConfig (EmbossConfig);
+        convMatrix.Factor = 16;
+        convMatrix.Offset = 0;
+        return ConvolutionMatrix.computeConvolution3x3 (src, convMatrix);
+    }
+
+    public static Bitmap nettete(Bitmap src) {
+        double [] [] EmbossConfig = new double [] [] {
+                {0, -1, 0},
+                {-1, 5, -1},
+                {0, -1, 0}
+        };
+        ConvolutionMatrix convMatrix = new ConvolutionMatrix (3);
+        convMatrix.applyConfig (EmbossConfig);
+        convMatrix.Factor = 1;
+        convMatrix.Offset = 0;
+        return ConvolutionMatrix.computeConvolution3x3 (src, convMatrix);
+    }
+
+    public static Bitmap boxBlur(Bitmap src) {
+        double [] [] EmbossConfig = new double [] [] {
+                {1, 1, 1},
+                {1, 1, 1},
+                {1, 1, 1}
+        };
+        ConvolutionMatrix convMatrix = new ConvolutionMatrix (3);
+        convMatrix.applyConfig (EmbossConfig);
+        convMatrix.Factor = 9;
+        convMatrix.Offset = 0;
+        return ConvolutionMatrix.computeConvolution3x3 (src, convMatrix);
+    }
+
 }
