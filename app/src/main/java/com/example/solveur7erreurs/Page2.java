@@ -36,7 +36,7 @@ public class Page2 extends AppCompatActivity {
     Button comparer;
 
     //Recuperation du chemin des deux images
-    public static Bitmap getBitmap(int i) {
+    public static Bitmap transBitmap(int i) {
         if(i==1)
             return bitmap;
         else
