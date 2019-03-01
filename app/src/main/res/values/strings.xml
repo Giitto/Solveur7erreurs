@@ -5,5 +5,7 @@
     <string name="IMAGE2">IMAGE2</string>
     <string name="IMAGE1">IMAGE1</string>
     <string name="LANCER">Lancer Comparaison</string>
+    <string name="ExplicationP3">Voici les differences</string>
+    <string name="REPLAY">REPLAY</string>
 
 </resources>

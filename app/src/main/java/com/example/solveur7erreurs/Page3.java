@@ -1,9 +1,12 @@
 package com.example.solveur7erreurs;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,22 +21,39 @@ public class Page3 extends AppCompatActivity{
     Bitmap image1 = createBitmap(Page2.transBitmap(1));
     Bitmap image2 = createBitmap(Page2.transBitmap(2));
     TextView textView3;
-    ImageView result;
+    ImageView result1;
+    ImageView result2;
+
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_page3);
         textView3 = findViewById(R.id.textView3);
-        result = findViewById(R.id.imageView3);
+        result1 = findViewById(R.id.imageView3);
+        result2 = findViewById(R.id.imageView4);
+        button = findViewById(R.id.angry_btn3);
+
         textView3.setText(image1.toString() + "\n" + image2.toString());
 
-        Bitmap tuc = RotateBitmap(image2, 0);
+        Bitmap tuc = RotateBitmap(image2,45);
         /*ConvolutionMatrix matrix = new ConvolutionMatrix(3);
         matrix.setAll(1);*/
-        tuc = ConvolutionMatrix.findDifference(ConvolutionMatrix.gaussianBlur(image1),image2);
+        image1 = ConvolutionMatrix.gaussianBlur(image1);
+        tuc = ConvolutionMatrix.findDifference(image1,image2);
 
-        result.setImageBitmap((tuc));
+        result1.setImageBitmap(image1);
+        result2.setImageBitmap(tuc);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent page2 = new Intent(getApplicationContext(), Page2.class);
+                startActivity(page2);
+                finish();
+            }
+        });
     }
 
 
