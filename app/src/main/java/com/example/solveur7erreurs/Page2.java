@@ -63,7 +63,7 @@ public class Page2 extends AppCompatActivity {
         comparer = findViewById(R.id.angry_btn2);
 
 
-        //Fonction onClick du bouton Image n°1
+        //Fonction onClick du bouton image n°1
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +72,7 @@ public class Page2 extends AppCompatActivity {
                 startActivityForResult(i, RESULT_LOAD_IMAGE);
             }
         });
-        //Fonction onClick du bouton Image n°2
+        //Fonction onClick du bouton image n°2
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

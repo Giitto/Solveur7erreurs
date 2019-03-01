@@ -2,9 +2,13 @@ package com.example.solveur7erreurs;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.widget.Toast;
+
+import org.jetbrains.annotations.NotNull;
 
 public class ConvolutionMatrix {
     public static final int SIZE = 3;
+    private static final int threashold = 10;
 
     public double[][] Matrix;
     public double Factor = 1;
@@ -125,6 +129,34 @@ public class ConvolutionMatrix {
         convMatrix.Factor = 9;
         convMatrix.Offset = 0;
         return ConvolutionMatrix.computeConvolution3x3 (src, convMatrix);
+    }
+
+    public static Bitmap findDifference(@NotNull Bitmap firstImage, @NotNull Bitmap secondImage) {
+        Bitmap bmp = secondImage.copy(secondImage.getConfig(), true);
+
+        if (firstImage.getWidth() != secondImage.getWidth()
+                || firstImage.getHeight() != secondImage.getHeight()) {
+            return bmp;
+        }
+
+        for (int i = 0; i < firstImage.getWidth(); i++) {
+            for (int j = 0; j < firstImage.getHeight(); j++) {
+                int pixel = firstImage.getPixel(i,j);
+                int redValue = Color.red(pixel);
+                int blueValue = Color.blue(pixel);
+                int greenValue = Color.green(pixel);
+
+                int pixel2 = secondImage.getPixel(i,j);
+                int redValue2 = Color.red(pixel2);
+                int blueValue2 = Color.blue(pixel2);
+                int greenValue2 = Color.green(pixel2);
+                if (Math.abs(redValue2 - redValue) + Math.abs(blueValue2 - blueValue) + Math.abs(greenValue2 - greenValue) >= threashold) {
+                    bmp.setPixel(i, j, Color.YELLOW);
+                }
+            }
+        }
+
+        return bmp;
     }
 
 }
