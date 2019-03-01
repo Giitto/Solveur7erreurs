@@ -31,7 +31,7 @@ public class Page3 extends AppCompatActivity{
         Bitmap tuc = RotateBitmap(image2, 0);
         /*ConvolutionMatrix matrix = new ConvolutionMatrix(3);
         matrix.setAll(1);*/
-        tuc = ConvolutionMatrix.findDifference(image1,image2);
+        tuc = ConvolutionMatrix.findDifference(ConvolutionMatrix.gaussianBlur(image1),image2);
 
         result.setImageBitmap((tuc));
     }

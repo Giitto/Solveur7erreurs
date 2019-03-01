@@ -2,17 +2,16 @@ package com.example.solveur7erreurs;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
 public class ConvolutionMatrix {
-    public static final int SIZE = 3;
+    private static final int SIZE = 3;
     private static final int threashold = 10;
 
-    public double[][] Matrix;
-    public double Factor = 1;
-    public double Offset = 1;
+    private double[][] Matrix;
+    private double Factor = 1;
+    private double Offset = 1;
 
     public ConvolutionMatrix(int size) {
         Matrix = new double[size][size];
