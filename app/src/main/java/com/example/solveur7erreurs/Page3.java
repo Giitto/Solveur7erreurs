@@ -47,18 +47,18 @@ public class Page3 extends AppCompatActivity{
 
         textView3.setText(image1.toString() + "\n" + image2.toString());
 
-        //image1 = RotateBitmap(image2,90);
-        //image2 = RotateBitmap(image2,90);
+        image1 = RotateBitmap(image2,90);
+        image2 = RotateBitmap(image2,90);
 
-        image1 = Compress(image1, 50);
+        //image1 = Compress(image1, 50);
 
-        //image1 = ConvolutionMatrix.boxBlur1(image1);
-        //image2 = ConvolutionMatrix.boxBlur1(image2);
-        //tuc = ConvolutionMatrix.findDifference(image1,image2);
+        image1 = ConvolutionMatrix.boxBlur1(image1);
+        image2 = ConvolutionMatrix.boxBlur1(image2);
+        tuc = ConvolutionMatrix.findDifference(image1,image2);
 
         result1.setImageBitmap(image1);
         result2.setImageBitmap(image2);
-        //result3.setImageBitmap(tuc);
+        result3.setImageBitmap(tuc);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
