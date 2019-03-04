@@ -1,7 +1,9 @@
 package com.example.solveur7erreurs;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.io.ByteArrayOutputStream;
 
 import static android.graphics.Bitmap.createBitmap;
 
@@ -29,6 +33,7 @@ public class Page3 extends AppCompatActivity{
 
     Button button;
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,15 +50,15 @@ public class Page3 extends AppCompatActivity{
         //image1 = RotateBitmap(image2,90);
         //image2 = RotateBitmap(image2,90);
 
-        /*ConvolutionMatrix matrix = new ConvolutionMatrix(3);
-        matrix.setAll(1);*/
-        image1 = ConvolutionMatrix.boxBlur1(image1);
-        image2 = ConvolutionMatrix.boxBlur1(image2);
-        tuc = ConvolutionMatrix.findDifference(image1,image2);
+        image1 = Compress(image1, 50);
+
+        //image1 = ConvolutionMatrix.boxBlur1(image1);
+        //image2 = ConvolutionMatrix.boxBlur1(image2);
+        //tuc = ConvolutionMatrix.findDifference(image1,image2);
 
         result1.setImageBitmap(image1);
         result2.setImageBitmap(image2);
-        result3.setImageBitmap(tuc);
+        //result3.setImageBitmap(tuc);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,5 +80,12 @@ public class Page3 extends AppCompatActivity{
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
-
+    public static Bitmap Compress(Bitmap source, int qualite)
+    {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        source.compress(Bitmap.CompressFormat.PNG, qualite, stream);
+        byte[] byteArray = stream.toByteArray();
+        source = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+        return source;
+    }
 }
