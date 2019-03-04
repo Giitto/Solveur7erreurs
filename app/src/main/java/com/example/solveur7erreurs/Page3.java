@@ -23,6 +23,9 @@ public class Page3 extends AppCompatActivity{
     TextView textView3;
     ImageView result1;
     ImageView result2;
+    ImageView result3;
+
+    Bitmap tuc;
 
     Button button;
 
@@ -33,18 +36,24 @@ public class Page3 extends AppCompatActivity{
         textView3 = findViewById(R.id.textView3);
         result1 = findViewById(R.id.imageView3);
         result2 = findViewById(R.id.imageView4);
+        result3 = findViewById(R.id.imageView5);
+
         button = findViewById(R.id.angry_btn3);
 
         textView3.setText(image1.toString() + "\n" + image2.toString());
 
-        Bitmap tuc = RotateBitmap(image2,45);
+        //image1 = RotateBitmap(image2,90);
+        //image2 = RotateBitmap(image2,90);
+
         /*ConvolutionMatrix matrix = new ConvolutionMatrix(3);
         matrix.setAll(1);*/
         image1 = ConvolutionMatrix.gaussianBlur(image1);
+        image2 = ConvolutionMatrix.gaussianBlur(image2);
         tuc = ConvolutionMatrix.findDifference(image1,image2);
 
         result1.setImageBitmap(image1);
-        result2.setImageBitmap(tuc);
+        result2.setImageBitmap(image2);
+        result3.setImageBitmap(tuc);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

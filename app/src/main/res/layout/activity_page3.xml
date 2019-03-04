@@ -37,6 +37,7 @@
         app:srcCompat="@drawable/img1" />
 
 
+
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="258dp"
@@ -55,6 +56,21 @@
         app:layout_constraintVertical_bias="0.59"
         app:srcCompat="@drawable/img2" />
 
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="258dp"
+        android:layout_height="208dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/IMAGE1"
+        android:cropToPadding="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:srcCompat="@drawable/img1" />
 
     <Button
         android:id="@+id/angry_btn3"

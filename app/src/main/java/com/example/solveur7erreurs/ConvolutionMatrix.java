@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ConvolutionMatrix {
     private static final int SIZE = 3;
-    private static final int threashold = 10;
+    private static final int threashold = 50;
 
     private double[][] Matrix;
     private double Factor = 1;
