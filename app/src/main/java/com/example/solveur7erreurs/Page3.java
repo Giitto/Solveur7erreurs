@@ -50,14 +50,14 @@ public class Page3 extends AppCompatActivity{
         image1 = RotateBitmap(image2,90);
         image2 = RotateBitmap(image2,90);
 
-        //image1 = Compress(image1, 50);
-
-        image1 = ConvolutionMatrix.boxBlur1(image1);
-        image2 = ConvolutionMatrix.boxBlur1(image2);
+        image1 = Compress(image1, 50);
+        image2 = Compress(image2, 50);
+        image1 = ConvolutionMatrix.boxBlur(image1);
+        image2 = ConvolutionMatrix.boxBlur(image2);
         tuc = ConvolutionMatrix.findDifference(image1,image2);
 
         result1.setImageBitmap(image1);
-        result2.setImageBitmap(image2);
+        //result2.setImageBitmap(image2);
         result3.setImageBitmap(tuc);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +83,7 @@ public class Page3 extends AppCompatActivity{
     public static Bitmap Compress(Bitmap source, int qualite)
     {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        source.compress(Bitmap.CompressFormat.PNG, qualite, stream);
+        source.compress(Bitmap.CompressFormat.JPEG, qualite, stream);
         byte[] byteArray = stream.toByteArray();
         source = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
         return source;
