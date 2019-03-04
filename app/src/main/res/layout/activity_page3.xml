@@ -75,12 +75,12 @@
     <Button
         android:id="@+id/angry_btn3"
 
-        android:layout_width="294dp"
-        android:layout_height="98dp"
+        android:layout_width="152dp"
+        android:layout_height="47dp"
 
         android:layout_marginStart="80dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/buttonshape"
         android:shadowColor="#E63CB3"
         android:shadowDx="-10"
@@ -91,6 +91,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
