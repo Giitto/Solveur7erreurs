@@ -130,6 +130,15 @@ public class ConvolutionMatrix {
         return ConvolutionMatrix.computeConvolution3x3 (src, convMatrix);
     }
 
+    public static Bitmap boxBlur1(Bitmap src) {
+
+        ConvolutionMatrix convMatrix = new ConvolutionMatrix (9);
+        convMatrix.setAll(1);
+        convMatrix.Factor = 81;
+        convMatrix.Offset = 0;
+        return ConvolutionMatrix.computeConvolution3x3 (src, convMatrix);
+    }
+
     public static Bitmap findDifference(@NotNull Bitmap firstImage, @NotNull Bitmap secondImage) {
         Bitmap bmp = secondImage.copy(secondImage.getConfig(), true);
 

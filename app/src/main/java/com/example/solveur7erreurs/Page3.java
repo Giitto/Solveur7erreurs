@@ -47,8 +47,8 @@ public class Page3 extends AppCompatActivity{
 
         /*ConvolutionMatrix matrix = new ConvolutionMatrix(3);
         matrix.setAll(1);*/
-        image1 = ConvolutionMatrix.gaussianBlur(image1);
-        image2 = ConvolutionMatrix.gaussianBlur(image2);
+        image1 = ConvolutionMatrix.boxBlur1(image1);
+        image2 = ConvolutionMatrix.boxBlur1(image2);
         tuc = ConvolutionMatrix.findDifference(image1,image2);
 
         result1.setImageBitmap(image1);
