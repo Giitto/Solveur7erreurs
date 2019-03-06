@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import static android.content.ContentValues.TAG;
 
 public class ConvolutionMatrix {
-    private static final int SIZE = 3;
+    private static final int SIZE = 5;
     private static final int threashold = 30;
 
     private double[][] Matrix;

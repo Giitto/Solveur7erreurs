@@ -50,17 +50,19 @@ public class Page3 extends AppCompatActivity{
 
         t1 = new Thread(new Runnable() {
             public void run(){
-                image1 = RotateBitmap(image1,90);
-                image1 = Compress(image1, 50);
-                image1 = ConvolutionMatrix.gaussianBlur(image1);
+                image1 = Bitmap.createScaledBitmap(image1, (int) (image1.getWidth()*0.5), (int) (image1.getHeight()*0.5) , true);
+                //image1 = RotateBitmap(image1,90);
+                image1 = Compress(image1, 25);
+                image1 = ConvolutionMatrix.gaussianBlur5x5(image1);
             }
         });
 
         t2 = new Thread(new Runnable() {
             public void run(){
-                image2 = RotateBitmap(image2,90);
-                image2 = Compress(image2, 50);
-                image2 = ConvolutionMatrix.gaussianBlur(image2);
+                image2 = Bitmap.createScaledBitmap(image2, (int) (image2.getWidth()*0.5), (int) (image2.getHeight()*0.5) , true);
+                //image2 = RotateBitmap(image2,90);
+                image2 = Compress(image2, 25);
+                image2 = ConvolutionMatrix.gaussianBlur5x5(image2);
             }
         });
 
@@ -75,13 +77,6 @@ public class Page3 extends AppCompatActivity{
             }
         }
 
-        // image1 = RotateBitmap(image1,90);
-        //image2 = RotateBitmap(image2,90);
-
-      //  image1 = Compress(image1, 50);
-      //  image2 = Compress(image2, 50);
-       // image1 = ConvolutionMatrix.gaussianBlur(image1);
-       // image2 = ConvolutionMatrix.gaussianBlur(image2);
         tuc = ConvolutionMatrix.findDifference(image1,image2);
 
         result1.setImageBitmap(image1);
