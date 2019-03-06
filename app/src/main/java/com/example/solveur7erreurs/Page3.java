@@ -66,16 +66,15 @@ public class Page3 extends AppCompatActivity{
 
         t1.start();
         t2.start();
-        try {
-            t1.wait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        for (Thread t : new Thread[] { t1, t2}) {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        try {
-            t2.wait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         // image1 = RotateBitmap(image1,90);
         //image2 = RotateBitmap(image2,90);
 
