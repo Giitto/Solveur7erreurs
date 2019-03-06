@@ -30,7 +30,8 @@ public class Page3 extends AppCompatActivity{
     ImageView result3;
 
     Bitmap tuc;
-
+    Thread t1;
+    Thread t2;
     Button button;
 
     @SuppressLint("WrongThread")
@@ -47,13 +48,41 @@ public class Page3 extends AppCompatActivity{
 
         textView3.setText(image1.toString() + "\n" + image2.toString());
 
-       // image1 = RotateBitmap(image1,90);
+        t1 = new Thread(new Runnable() {
+            public void run(){
+                image1 = RotateBitmap(image1,90);
+                image1 = Compress(image1, 50);
+                image1 = ConvolutionMatrix.gaussianBlur(image1);
+            }
+        });
+
+        t2 = new Thread(new Runnable() {
+            public void run(){
+                image2 = RotateBitmap(image2,90);
+                image2 = Compress(image2, 50);
+                image2 = ConvolutionMatrix.gaussianBlur(image2);
+            }
+        });
+
+        t1.start();
+        t2.start();
+        try {
+            t1.wait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            t2.wait();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // image1 = RotateBitmap(image1,90);
         //image2 = RotateBitmap(image2,90);
 
       //  image1 = Compress(image1, 50);
       //  image2 = Compress(image2, 50);
-        image1 = ConvolutionMatrix.gaussianBlur(image1);
-        image2 = ConvolutionMatrix.gaussianBlur(image2);
+       // image1 = ConvolutionMatrix.gaussianBlur(image1);
+       // image2 = ConvolutionMatrix.gaussianBlur(image2);
         tuc = ConvolutionMatrix.findDifference(image1,image2);
 
         result1.setImageBitmap(image1);
