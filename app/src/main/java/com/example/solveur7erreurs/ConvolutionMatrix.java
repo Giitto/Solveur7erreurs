@@ -2,12 +2,15 @@ package com.example.solveur7erreurs;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 
+import static android.content.ContentValues.TAG;
+
 public class ConvolutionMatrix {
-    private static final int SIZE = 5;
-    private static final int threashold = 10;
+    private static final int SIZE = 3;
+    private static final int threashold = 30;
 
     private double[][] Matrix;
     private double Factor = 1;
@@ -36,6 +39,8 @@ public class ConvolutionMatrix {
     public static Bitmap computeConvolution3x3(Bitmap src, ConvolutionMatrix matrix) {
         int width = src.getWidth();
         int height = src.getHeight();
+        int[] pixel = new int[width * height];
+        src.getPixels(pixel,0,width,0,0,width,height);
         Bitmap result = Bitmap.createBitmap(width, height, src.getConfig());
 
         int A, R, G, B;
@@ -48,7 +53,7 @@ public class ConvolutionMatrix {
                 // get pixel matrix
                 for(int i = 0; i < SIZE; ++i) {
                     for(int j = 0; j < SIZE; ++j) {
-                        pixels[i][j] = src.getPixel(x + i, y + j);
+                        pixels[i][j] = pixel[(i+y)*width + j + x];
                     }
                 }
 
@@ -94,6 +99,9 @@ public class ConvolutionMatrix {
     public static Bitmap computeConvolution5x5(Bitmap src, ConvolutionMatrix matrix) {
         int width = src.getWidth();
         int height = src.getHeight();
+        int[] pixel = new int[width * height];
+        src.getPixels(pixel,0,width,0,0,width,height);
+
         Bitmap result = Bitmap.createBitmap(width, height, src.getConfig());
 
         int A, R, G, B;
@@ -106,7 +114,8 @@ public class ConvolutionMatrix {
                 // get pixel matrix
                 for(int i = 0; i < SIZE; ++i) {
                     for(int j = 0; j < SIZE; ++j) {
-                        pixels[i][j] = src.getPixel(x + i, y + j);
+                       // Log.d(TAG, "computeConvolution5x5: "+ j + x + " " + y + i+" ");
+                        pixels[i][j] = pixel[(i+y)*width + j + x];
                     }
                 }
 
