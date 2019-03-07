@@ -78,8 +78,9 @@ public class Page3 extends AppCompatActivity{
                 e.printStackTrace();
             }
         }*/
-        image2 = rotateBitmap(image2,180);
-        tuc = calibrage1( image1,  image2);//ConvolutionMatrix.findDifference(image1,image2);
+        //image2 = rotateBitmap(image2,180);
+        image1 = Calibrage.zone(image1);
+        tuc = ConvolutionMatrix.findDifference(image1,image2);
 
         result1.setImageBitmap(image1);
         result2.setImageBitmap(image2);
@@ -98,28 +99,6 @@ public class Page3 extends AppCompatActivity{
 
     //Bitmap source = BitmapFactory.decodeResource(this.getResources(), R.drawable.image2);
 
-    public static Bitmap rotateBitmap(Bitmap source, float angle)
-    {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
-    }
 
-    public static Bitmap Compress(Bitmap source, int qualite)
-    {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        source.compress(Bitmap.CompressFormat.JPEG, qualite, stream);
-        byte[] byteArray = stream.toByteArray();
-        source = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
-        return source;
-    }
 
-    public static Bitmap calibrage1(Bitmap im1, Bitmap im2)
-    {
-        while(ConvolutionMatrix.pourcentErreur(im1,im2) !=0)
-        {
-            im2 = rotateBitmap(im2,90);
-        }
-        return ConvolutionMatrix.findDifference(im1,im2);
-    }
 }
