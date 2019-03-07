@@ -301,4 +301,28 @@ public class ConvolutionMatrix {
         return cmp / wh;
     }
 
+    public static double pourcentErreur(@NotNull Bitmap firstImage, @NotNull Bitmap secondImage,int x1,int y1,int x2, int y2) {
+
+        double wh = (x2-x1)*(y2-y1);
+        double cmp = 0;
+
+        for (int i = x1; i < x2; i++) {
+            for (int j = y1; j < y2; j++) {
+                int pixel = firstImage.getPixel(i-x1, j-y1);
+                int redValue = Color.red(pixel);
+                int blueValue = Color.blue(pixel);
+                int greenValue = Color.green(pixel);
+
+                int pixel2 = secondImage.getPixel(i, j);
+                int redValue2 = Color.red(pixel2);
+                int blueValue2 = Color.blue(pixel2);
+                int greenValue2 = Color.green(pixel2);
+                if (Math.abs(redValue2 - redValue) + Math.abs(blueValue2 - blueValue) + Math.abs(greenValue2 - greenValue) >= threashold) {
+                    cmp++;
+                }
+            }
+        }
+        return (cmp / wh)*100;
+    }
+
 }

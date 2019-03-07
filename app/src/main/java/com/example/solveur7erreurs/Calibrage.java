@@ -7,6 +7,53 @@ import java.io.ByteArrayOutputStream;
 
 public class Calibrage {
 
+    private int width;
+    private int height;
+    private double pourcent;
+    private int rotation;
+
+
+    @Override
+    public String toString() {
+        return "Calibrage{" +
+                "width=" + width +
+                ", height=" + height +
+                ", pourcent=" + pourcent +
+                ", rotation=" + rotation +
+                '}';
+    }
+
+    public Calibrage(int width, int height, int poucent, int rotation){
+        this.width = width;
+        this.height = height;
+        this.pourcent = poucent;
+        this.rotation = rotation;
+    }
+
+    public static Calibrage recherche(Bitmap zone1, Bitmap im2){
+        double p;
+        int x1 = (int) Math.floor(im2.getWidth()/5);
+        int y1 = (int) Math.floor(im2.getHeight()/5);
+        int xsize = x1;
+        int ysize = y1;
+        int x2 = im2.getWidth() - x1;
+        int y2 = im2.getHeight() - y1;
+        Calibrage cal = new Calibrage(0,0,100,0);
+
+        for (int i=x1;i<x2;i++) {
+            for (int j=y1; j<y2;j++) {
+                p = ConvolutionMatrix.pourcentErreur(zone1, im2, i, j, i + xsize, j + ysize);
+                if (p < cal.getPourcent()) {
+                    cal.setPourcent(p);
+                    cal.setHeight(j);
+                    cal.setWidth(i);
+                }
+            }
+        }
+
+        return cal;
+    }
+
     public static Bitmap zone( Bitmap im1){
         int h1 = im1.getHeight();
         int w1 = im1.getWidth();
@@ -47,4 +94,41 @@ public class Calibrage {
         source = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
         return source;
     }
+
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setPourcent(double pourcent) {
+        this.pourcent = pourcent;
+    }
+
+    public void setRotation(int rotation) {
+        this.rotation = rotation;
+    }
+
+
+    public int getWidth() {
+        return width;
+    }
+
+
+
+    public int getHeight() {
+        return height;
+    }
+
+    public double getPourcent() {
+        return pourcent;
+    }
+
+    public int getRotation() {
+        return rotation;
+    }
 }
+

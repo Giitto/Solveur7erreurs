@@ -1,11 +1,13 @@
 package com.example.solveur7erreurs;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.ByteArrayOutputStream;
 
 import static android.graphics.Bitmap.createBitmap;
+import static com.example.solveur7erreurs.Calibrage.Compress;
+import static com.example.solveur7erreurs.Calibrage.rotateBitmap;
 
 
 public class Page3 extends AppCompatActivity{
@@ -24,6 +28,8 @@ public class Page3 extends AppCompatActivity{
 
     Bitmap image1 = createBitmap(Page2.transBitmap(1));
     Bitmap image2 = createBitmap(Page2.transBitmap(2));
+    Bitmap zone;
+    Calibrage cal;
     TextView textView3;
     ImageView result1;
     ImageView result2;
@@ -53,7 +59,6 @@ public class Page3 extends AppCompatActivity{
         t1 = new Thread(new Runnable() {
             public void run(){
                 image1 = Bitmap.createScaledBitmap(image1, (int) (image1.getWidth()*0.5), (int) (image1.getHeight()*0.5) , true);
-                //image1 = RotateBitmap(image1,90);
                 image1 = Compress(image1, 25);
                 image1 = ConvolutionMatrix.gaussianBlur5x5(image1);
             }
@@ -62,7 +67,6 @@ public class Page3 extends AppCompatActivity{
         t2 = new Thread(new Runnable() {
             public void run(){
                 image2 = Bitmap.createScaledBitmap(image2, (int) (image2.getWidth()*0.5), (int) (image2.getHeight()*0.5) , true);
-                //image2 = RotateBitmap(image2,90);
                 image2 = Compress(image2, 25);
                 image2 = ConvolutionMatrix.gaussianBlur5x5(image2);
             }
@@ -79,12 +83,32 @@ public class Page3 extends AppCompatActivity{
             }
         }*/
         //image2 = rotateBitmap(image2,180);
-        image1 = Calibrage.zone(image1);
-        tuc = ConvolutionMatrix.findDifference(image1,image2);
-
+        zone = Calibrage.zone(image1);
+        zone = Calibrage.rotateBitmap(zone,5);
+        cal = Calibrage.recherche(zone,image1);//ConvolutionMatrix.findDifference(image1,image2);
+        textView3.setText(cal.toString());
         result1.setImageBitmap(image1);
         result2.setImageBitmap(image2);
-        result3.setImageBitmap(tuc);
+        result3.setImageBitmap(zone);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("Title");
+        builder.setMessage(cal.toString());
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
