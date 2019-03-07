@@ -96,15 +96,15 @@ public class Calibrage {
     }
 
 
-    public void setWidth(int width) {
+    private void setWidth(int width) {
         this.width = width;
     }
 
-    public void setHeight(int height) {
+    private void setHeight(int height) {
         this.height = height;
     }
 
-    public void setPourcent(double pourcent) {
+    private void setPourcent(double pourcent) {
         this.pourcent = pourcent;
     }
 
@@ -113,21 +113,21 @@ public class Calibrage {
     }
 
 
-    public int getWidth() {
+    private int getWidth() {
         return width;
     }
 
 
 
-    public int getHeight() {
+    private int getHeight() {
         return height;
     }
 
-    public double getPourcent() {
+    private double getPourcent() {
         return pourcent;
     }
 
-    public int getRotation() {
+    private int getRotation() {
         return rotation;
     }
 }
