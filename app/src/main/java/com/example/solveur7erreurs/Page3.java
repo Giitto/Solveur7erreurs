@@ -33,6 +33,7 @@ public class Page3 extends AppCompatActivity{
     Thread t1;
     Thread t2;
     Button button;
+    double pourcentage;
 
     @SuppressLint("WrongThread")
     @Override
@@ -45,8 +46,9 @@ public class Page3 extends AppCompatActivity{
         result3 = findViewById(R.id.imageView5);
 
         button = findViewById(R.id.angry_btn3);
-
-        textView3.setText(image1.toString() + "\n" + image2.toString());
+        pourcentage = ConvolutionMatrix.pourcentErreur(image1,image2);
+        /*if(pourcentage==0)
+            textView3.setText(image1.toString() + "\n" + image2.toString());
 
         t1 = new Thread(new Runnable() {
             public void run(){
@@ -75,9 +77,9 @@ public class Page3 extends AppCompatActivity{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
-
-        tuc = ConvolutionMatrix.findDifference(image1,image2);
+        }*/
+        image2 = rotateBitmap(image2,180);
+        tuc = calibrage1( image1,  image2);//ConvolutionMatrix.findDifference(image1,image2);
 
         result1.setImageBitmap(image1);
         result2.setImageBitmap(image2);
@@ -96,7 +98,7 @@ public class Page3 extends AppCompatActivity{
 
     //Bitmap source = BitmapFactory.decodeResource(this.getResources(), R.drawable.image2);
 
-    public static Bitmap RotateBitmap(Bitmap source, float angle)
+    public static Bitmap rotateBitmap(Bitmap source, float angle)
     {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
@@ -110,5 +112,14 @@ public class Page3 extends AppCompatActivity{
         byte[] byteArray = stream.toByteArray();
         source = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
         return source;
+    }
+
+    public static Bitmap calibrage1(Bitmap im1, Bitmap im2)
+    {
+        while(ConvolutionMatrix.pourcentErreur(im1,im2) !=0)
+        {
+            im2 = rotateBitmap(im2,90);
+        }
+        return ConvolutionMatrix.findDifference(im1,im2);
     }
 }
