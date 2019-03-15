@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static android.graphics.Bitmap.createBitmap;
 import static com.example.solveur7erreurs.Calibrage.Compress;
@@ -113,13 +114,36 @@ public class Page3 extends AppCompatActivity{
             }
         });
         t1.start();
-        for (Thread t : new Thread[] { t1}) {
+        try {
+            t2.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        t2.start();
+        try {
+            t3.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        t3.start();
+        try {
+            t4.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        t4.start();
+
+        for (Thread t : new Thread[] { t1,t2,t3,t4}) {
             try {
                 t.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+
+        cal = Calibrage.MinCal(cal1);
 /*
         //image2 = rotateBitmap(image2,180);
         zone = Calibrage.rotateBitmap(zone,5);
@@ -130,11 +154,10 @@ public class Page3 extends AppCompatActivity{
         result3.setImageBitmap(zone);*/
 
 
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle("Title");
-        builder.setMessage(cal1.get(0).toString());
+        builder.setMessage(cal1.toString());
         builder.setPositiveButton("Confirm",
                 new DialogInterface.OnClickListener() {
                     @Override
