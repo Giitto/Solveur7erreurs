@@ -124,7 +124,7 @@ public class Page3 extends AppCompatActivity{
 
         //image2 = rotateBitmap(image2,180);
 
-        cal = Calibrage.recherche(zone,image2);//ConvolutionMatrix.findDifference(image1,image2);
+        cal = Calibrage.recherche(zone,image2,0);//ConvolutionMatrix.findDifference(image1,image2);
         textView3.setText(cal.toString());
 
         //Test 19/03/2019

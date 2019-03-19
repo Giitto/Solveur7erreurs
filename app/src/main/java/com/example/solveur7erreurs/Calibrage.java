@@ -12,6 +12,7 @@ public class Calibrage {
     private int height;
     private double pourcent;
     private int rotation;
+    private int r2;
 
 
     @Override
@@ -24,23 +25,27 @@ public class Calibrage {
                 '}';
     }
 
-    public Calibrage(int width, int height, int poucent, int rotation){
+    public Calibrage(int width, int height, int poucent, int rotation, int r2){
         this.width = width;
         this.height = height;
         this.pourcent = poucent;
         this.rotation = rotation;
+        this.r2 = r2;
     }
 
-   /* public Calibrage MinCal( ArrayList<Calibrage> e){
-        cal
-            for (int i = 0;i<4;i++)
+   public static Calibrage MinCal(ArrayList<Calibrage> e){
+        Calibrage cal = e.get(0);
+            for (int i=1 ; i<4 ; i++)
             {
-
+                if(cal.getPourcent() > e.get(i).getPourcent())
+                    cal = e.get(i);
             }
-    }*/
+        return cal;
+    }
 
-    public static Calibrage recherche(Bitmap zone1, Bitmap im2){
+    public static Calibrage recherche(Bitmap zone1, Bitmap im2, int r1){
         double p;
+        int r2;
         int x1 = (im2.getWidth()/5);
         int y1 = (int) (im2.getHeight()/5);
         System.out.println(x1 + " " +y1);
@@ -49,22 +54,23 @@ public class Calibrage {
         int ysize = y1;
         int x2 = 3*x1;
         int y2 = 3*y1;
-        Calibrage cal = new Calibrage(0,0,100,0);
-        for(int r=-5 ; r<=-4 ; r++) {
-            //zone1=rotateBitmap(zone1,r);
+        Calibrage cal = new Calibrage(0,0,100,0, r1);
+        Bitmap zone2;
+        for(int r=-1 ; r<=0 ; r++) {
+            zone2=rotateBitmap(zone1,r);
             for (int i = x1; i <= x2+2; i++) {
-                for (int j = y1; j <= y2 +2; j++) {
-                    p = ConvolutionMatrix.pourcentErreur(zone1, im2, i, j, i + xsize, j + ysize);
+                for (int j = y1; j <= y2+2; j++) {
+                    System.out.println(i + " " +r1);
+                    p = ConvolutionMatrix.pourcentErreur(zone2, im2, i, j, i + xsize, j + ysize);
                     if (p < cal.getPourcent()) {
                         cal.setPourcent(p);
                         cal.setHeight(j);
                         cal.setWidth(i);
-                        cal.setRotation(r);
+                        cal.setRotation(r+r1);
                     }
                 }
             }
         }
-
         return cal;
     }
 
