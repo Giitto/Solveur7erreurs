@@ -2,7 +2,6 @@ package com.example.solveur7erreurs;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.provider.CalendarContract;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -32,36 +31,35 @@ public class Calibrage {
         this.rotation = rotation;
     }
 
-    public static Calibrage MinCal(ArrayList<Calibrage> e){
-        Calibrage cal = e.get(0);
+   /* public Calibrage MinCal( ArrayList<Calibrage> e){
+        cal
             for (int i = 0;i<4;i++)
             {
-                if( cal.pourcent>e.get(i).pourcent )
-                    cal=e.get(i);
 
             }
-            return cal;
-    }
+    }*/
 
     public static Calibrage recherche(Bitmap zone1, Bitmap im2){
         double p;
-        int x1 = (int) Math.floor(im2.getWidth()/5);
-        int y1 = (int) Math.floor(im2.getHeight()/5);
+        int x1 = (im2.getWidth()/5);
+        int y1 = (int) (im2.getHeight()/5);
+        System.out.println(x1 + " " +y1);
+        System.out.println(zone1.getWidth() + " " + zone1.getHeight());
         int xsize = x1;
         int ysize = y1;
-        int x2 = im2.getWidth() - x1;
-        int y2 = im2.getHeight() - y1;
+        int x2 = 3*x1;
+        int y2 = 3*y1;
         Calibrage cal = new Calibrage(0,0,100,0);
-        for(int r=-1 ; r<=1 ; r++) {
-            zone1=rotateBitmap(zone1,r);
-            for (int i = x1; i < x2; i++) {
-                for (int j = y1; j < y2; j++) {
-                    p = ConvolutionMatrix.pourcentErreur(zone1, im2);
-                    if (p <= cal.getPourcent()) {
+        for(int r=-5 ; r<=-4 ; r++) {
+            //zone1=rotateBitmap(zone1,r);
+            for (int i = x1; i <= x2+2; i++) {
+                for (int j = y1; j <= y2 +2; j++) {
+                    p = ConvolutionMatrix.pourcentErreur(zone1, im2, i, j, i + xsize, j + ysize);
+                    if (p < cal.getPourcent()) {
                         cal.setPourcent(p);
                         cal.setHeight(j);
                         cal.setWidth(i);
-                        cal.setRotation(r);
+                        //cal.setRotation(r);
                     }
                 }
             }
