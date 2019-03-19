@@ -1,6 +1,7 @@
 package com.example.solveur7erreurs;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static android.graphics.Bitmap.createBitmap;
 import static com.example.solveur7erreurs.Calibrage.Compress;
@@ -56,31 +56,31 @@ public class Page3 extends AppCompatActivity{
 
         button = findViewById(R.id.angry_btn3);
         pourcentage = ConvolutionMatrix.pourcentErreur(image1,image2);
-        /*if(pourcentage==0)
+        if(pourcentage==0)
             textView3.setText(image1.toString() + "\n" + image2.toString());
 
         t1 = new Thread(new Runnable() {
             public void run(){
                 image1 = Bitmap.createScaledBitmap(image1, (int) (image1.getWidth()*0.5), (int) (image1.getHeight()*0.5) , true);
-                image1 = Compress(image1, 25);
-                image1 = ConvolutionMatrix.gaussianBlur5x5(image1);
+                //image1 = Compress(image1, 25);
+                //image1 = ConvolutionMatrix.gaussianBlur5x5(image1);
             }
         });
 
         t2 = new Thread(new Runnable() {
             public void run(){
                 image2 = Bitmap.createScaledBitmap(image2, (int) (image2.getWidth()*0.5), (int) (image2.getHeight()*0.5) , true);
-                image2 = Compress(image2, 25);
-                image2 = ConvolutionMatrix.gaussianBlur5x5(image2);
+                //image2 = Compress(image2, 25);
+                //image2 = ConvolutionMatrix.gaussianBlur5x5(image2);
             }
         });
 
-        t1.start();
-        t2.start();
+        //t1.start();
+        //t2.start();
 
-        */
-       zone = Calibrage.zone(image1);
-       cal = Calibrage.recherche(zone,image2);
+
+        zone = Calibrage.zone(image1);
+
         /*t1 = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -113,51 +113,38 @@ public class Page3 extends AppCompatActivity{
                 cal1.add(Calibrage.recherche(zonerot.get(3),image2));
             }
         });
-        t1.start();
-        try {
-            t2.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        t2.start();
-        try {
-            t3.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        t3.start();
-        try {
-            t4.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        t4.start();
-
-        for (Thread t : new Thread[] { t1,t2,t3,t4}) {
+        t1.start();*/
+        for (Thread t : new Thread[] { t1, t2}) {
             try {
                 t.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }*/
+        }
 
-       // cal = Calibrage.MinCal(cal1);
-/*
         //image2 = rotateBitmap(image2,180);
-        zone = Calibrage.rotateBitmap(zone,5);
-    //    cal = Calibrage.recherche(zone,image1);//ConvolutionMatrix.findDifference(image1,image2);
-        textView3.setText(cal.toString());*/
+
+        cal = Calibrage.recherche(zone,image2);//ConvolutionMatrix.findDifference(image1,image2);
+        textView3.setText(cal.toString());
+
+        //Test 19/03/2019
+
+        Detection detect = new Detection(image1);
+        detect.toCircle(50,50,20);
+        image1 = detect.getBmp();
+
+
+        //
         result1.setImageBitmap(image1);
         result2.setImageBitmap(image2);
         result3.setImageBitmap(zone);
 
 
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle("Title");
-        builder.setMessage(cal1.toString());
+        builder.setMessage(cal.toString());
         builder.setPositiveButton("Confirm",
                 new DialogInterface.OnClickListener() {
                     @Override

@@ -2,9 +2,6 @@ package com.example.solveur7erreurs;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.provider.CalendarContract;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -17,7 +14,6 @@ public class Calibrage {
     private int rotation;
 
 
-    @NotNull
     @Override
     public String toString() {
         return "Calibrage{" +
@@ -35,57 +31,40 @@ public class Calibrage {
         this.rotation = rotation;
     }
 
-    public static Calibrage MinCal(ArrayList<Calibrage> e){
-        Calibrage cal = e.get(0);
+   /* public Calibrage MinCal( ArrayList<Calibrage> e){
+        cal
             for (int i = 0;i<4;i++)
             {
-                if( cal.pourcent>e.get(i).pourcent )
-                    cal=e.get(i);
 
             }
-            return cal;
-    }
+    }*/
 
     public static Calibrage recherche(Bitmap zone1, Bitmap im2){
-        double p = 100;
-        double p1,p2;
-        int r = 0;
-        Bitmap z1;
-        Bitmap z2;
-
-        //le bug se trouve dans ce bloc
-        double xsize = im2.getWidth()/5;
-        double ysize = im2.getHeight()/5;
-        int x1 = (int) xsize;
-        int y1 = (int) ysize;
-        int x2 = 4*x1;
-        int y2 = 4*y1;
-        // fin du bloc
+        double p;
+        int x1 = (im2.getWidth()/5);
+        int y1 = (int) (im2.getHeight()/5);
+        System.out.println(x1 + " " +y1);
+        System.out.println(zone1.getWidth() + " " + zone1.getHeight());
+        int xsize = x1;
+        int ysize = y1;
+        int x2 = 3*x1;
+        int y2 = 3*y1;
         Calibrage cal = new Calibrage(0,0,100,0);
-        while ((p != 0)||(r<2))//for(int r=0 ; r<=1 ; r++)
-        {
-            z1 = rotateBitmap(zone1,r);
-            z2 = rotateBitmap(zone1, -r);
-            for (int i = x1; i <= x2; i++) {
-                for (int j = y1; j <= y2; j++) {
-                    p1 = ConvolutionMatrix.pourcentErreur2(z1, im2, x1, y1, x2, y2);
-                    p2 = ConvolutionMatrix.pourcentErreur2(z2, im2, x1, y1, x2, y2);
-                    p = Math.min(p1,p2);
-                    if (p <= cal.getPourcent()) {
+        for(int r=-5 ; r<=-4 ; r++) {
+            //zone1=rotateBitmap(zone1,r);
+            for (int i = x1; i <= x2+2; i++) {
+                for (int j = y1; j <= y2 +2; j++) {
+                    p = ConvolutionMatrix.pourcentErreur(zone1, im2, i, j, i + xsize, j + ysize);
+                    if (p < cal.getPourcent()) {
                         cal.setPourcent(p);
-                        cal.setHeight(i);
-                        cal.setWidth(j);
-                        if (p == p1) {
-                            cal.setRotation(r);
-                        }
-                        else{
-                            cal.setRotation(-r);
-                        }
-                        if (p == 0) return cal;
+                        cal.setHeight(j);
+                        cal.setWidth(i);
+                        cal.setRotation(r);
                     }
                 }
-            } r++;
+            }
         }
+
         return cal;
     }
 
@@ -93,9 +72,9 @@ public class Calibrage {
         int h1 = im1.getHeight();
         int w1 = im1.getWidth();
         int y1 = (int) Math.floor(2*h1/5);
-        int y2 = 3*y1;
+        int y2 = h1 - y1;
         int x1 = (int) Math.floor(2*w1/5);
-        int x2 = 3*x1;
+        int x2 = w1 - x1;
         int[] pixels = new int[(x2 - x1)*(y2 - y1)];
         im1.getPixels(pixels,0,x2-x1,x1,y1,x2-x1,y2-y1);
         Bitmap zone = Bitmap.createBitmap(x2-x1,y2-y1,im1.getConfig());
