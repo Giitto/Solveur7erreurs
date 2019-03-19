@@ -1,6 +1,7 @@
 package com.example.solveur7erreurs;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -74,8 +75,8 @@ public class Page3 extends AppCompatActivity{
             }
         });
 
-        t1.start();
-        t2.start();
+        //t1.start();
+        //t2.start();
 
 
         zone = Calibrage.zone(image1);
@@ -125,6 +126,15 @@ public class Page3 extends AppCompatActivity{
 
         cal = Calibrage.recherche(zone,image2);//ConvolutionMatrix.findDifference(image1,image2);
         textView3.setText(cal.toString());
+
+        //Test 19/03/2019
+
+        Detection detect = new Detection(image1);
+        detect.toCircle(50,50,20);
+        image1 = detect.getBmp();
+
+
+        //
         result1.setImageBitmap(image1);
         result2.setImageBitmap(image2);
         result3.setImageBitmap(zone);

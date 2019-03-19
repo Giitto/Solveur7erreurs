@@ -59,7 +59,7 @@ public class Calibrage {
                         cal.setPourcent(p);
                         cal.setHeight(j);
                         cal.setWidth(i);
-                        //cal.setRotation(r);
+                        cal.setRotation(r);
                     }
                 }
             }
