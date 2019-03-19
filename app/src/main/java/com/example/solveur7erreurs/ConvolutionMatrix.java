@@ -301,7 +301,7 @@ public class ConvolutionMatrix {
         return (cmp / wh)*100;
     }
 
-    public static double pourcentErreur(@NotNull Bitmap firstImage, @NotNull Bitmap secondImage,int x1,int y1,int x2, int y2) {
+    public static double pourcentErreur2(@NotNull Bitmap firstImage, @NotNull Bitmap secondImage,int x1,int y1,int x2, int y2) {
 
         double wh = (x2-x1)*(y2-y1);
         double cmp = 0;
