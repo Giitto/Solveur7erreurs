@@ -113,7 +113,29 @@ public class Page3 extends AppCompatActivity{
                 cal1.add(Calibrage.recherche(zonerot.get(3),image2));
             }
         });
-        t1.start();*/
+        t1.start();
+        try {
+            t2.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        t2.start();
+        try {
+            t3.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        t3.start();
+        try {
+            t4.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        t4.start();
+
+        for (Thread t : new Thread[] { t1,t2,t3,t4}) {*/
         for (Thread t : new Thread[] { t1, t2}) {
             try {
                 t.join();
