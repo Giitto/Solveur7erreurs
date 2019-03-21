@@ -43,27 +43,25 @@ public class Calibrage {
         return cal;
     }
 
-    public static Calibrage recherche(Bitmap im1, Bitmap im2, int r1){
-        Bitmap zone2;
+    public static Calibrage recherche(Bitmap zone1, Bitmap im2, int r1){
         double p;
-        int x1, y1, x2, y2, z1, z2;
+        int r2;
+        int x1 = (im2.getWidth()/5);
+        int y1 = (int) (im2.getHeight()/5);
+        //System.out.println(x1 + " " +y1);
+        //System.out.println(zone1.getWidth() + " " + zone1.getHeight());
+        int xsize = x1;
+        int ysize = y1;
+        int x2 = 3*x1;
+        int y2 = 3*y1;
         Calibrage cal = new Calibrage(0,0,100,0, r1);
+        Bitmap zone2;
         for(int r=-1 ; r<=0 ; r++) {
-            zone2=zone(rotateBitmap(im1,r));
-            x1 = ((im2.getWidth()/5));
-            y1 = ((im2.getWidth()/5));
-            z1 = zone2.getWidth();
-            z2 = zone2.getHeight();
-            x2 = ((im2.getWidth()/5)*4)-z1;
-            y2 = ((im2.getHeight()/5)*4)-z2;
-            //System.out.println("z1: " +z1 + " z2: " +z2);
-            //System.out.println("x1: " +x1 + " y1: " +y1);
-            //System.out.println("x2: " +x2 + " y2: " +y1);
-
+            zone2=rotateBitmap(zone1,r);
             for (int i = x1; i <= x2; i++) {
                 for (int j = y1; j <= y2; j++) {
-                    //System.out.println( "i j" + i + " " +j);
-                    p = ConvolutionMatrix.pourcentErreur(zone2, im2, i, j, i + z1, j + z2);
+                    //System.out.println(i + " " +r1);
+                    p = ConvolutionMatrix.pourcentErreur(zone2, im2, i, j, i + xsize, j + ysize);
                     if (p < cal.getPourcent()) {
                         cal.setPourcent(p);
                         cal.setHeight(j);
