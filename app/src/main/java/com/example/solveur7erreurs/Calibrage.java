@@ -33,7 +33,9 @@ public class Calibrage {
         this.r2 = r2;
     }
 
-   public static Calibrage MinCal(ArrayList<Calibrage> e){
+
+
+    public static Calibrage MinCal(ArrayList<Calibrage> e){
         Calibrage cal = e.get(0);
             for (int i=1 ; i<4 ; i++)
             {
@@ -61,19 +63,14 @@ public class Calibrage {
             y2 = (y1*4)-z2;
 
             zone3=zone(rotateBitmap(im1,-r));
-            /*x11 = ((im2.getWidth()/5));
-            y11 = ((im2.getWidth()/5));
-            z11 = zone2.getWidth();
-            z12 = zone2.getHeight();
-            x12 = ((im2.getWidth()/5)*4)-z1;
-            y12 = ((im2.getHeight()/5)*4)-z2;*/
+
             System.out.println("z1: " +z1 + " z2: " +z2);
             System.out.println("x1: " +x1 + " y1: " +y1);
             System.out.println("x2: " +x2 + " y2: " +y1);
 
             for (int i = x1; i <= x2; i++) {
                 for (int j = y1; j <= y2; j++) {
-                    System.out.println( "i j" + i + " " +j);
+//                    System.out.println( "i j" + i + " " +j);
                     p1 = ConvolutionMatrix.pourcentErreur(zone2, im2, i, j, i + z1, j + z2);
                     p2 = ConvolutionMatrix.pourcentErreur(zone3, im2, i, j, i + z1, j + z2);
                     p = Math.min(p1, p2);
