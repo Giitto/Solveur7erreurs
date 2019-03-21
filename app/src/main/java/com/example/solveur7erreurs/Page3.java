@@ -59,7 +59,7 @@ public class Page3 extends AppCompatActivity{
         if(pourcentage==0)
             textView3.setText(image1.toString() + "\n" + image2.toString());
 
-        t1 = new Thread(new Runnable() {
+        /*t1 = new Thread(new Runnable() {
             public void run(){
                 image1 = Bitmap.createScaledBitmap(image1, (int) (image1.getWidth()*0.5), (int) (image1.getHeight()*0.5) , true);
                 //image1 = Compress(image1, 25);
@@ -77,40 +77,40 @@ public class Page3 extends AppCompatActivity{
 
         //t1.start();
         //t2.start();
+        */
+        image1 = Calibrage.rotateBitmap(image1,90);
 
 
-        zone = Calibrage.zone(image1);
-
-        /*t1 = new Thread(new Runnable() {
+        t1 = new Thread(new Runnable() {
             @Override
             public void run() {
 
-                zonerot.add(rotateBitmap(zone,0));
-               cal1.add(Calibrage.recherche(zonerot.get(0),image2));
+                zonerot.add(rotateBitmap(image1,0));
+               cal1.add(Calibrage.recherche(zonerot.get(0),image2,0));
             }
         });
         t2 = new Thread(new Runnable() {
             @Override
             public void run() {
 
-                zonerot.add(rotateBitmap(zone,90));
-                cal1.add(Calibrage.recherche(zonerot.get(1),image2));
+                zonerot.add(rotateBitmap(image1,90));
+                cal1.add(Calibrage.recherche(zonerot.get(1),image2,90));
             }
         });
         t3 = new Thread(new Runnable() {
             @Override
             public void run() {
 
-                zonerot.add(rotateBitmap(zone,180));
-                cal1.add(Calibrage.recherche(zonerot.get(2),image2));
+                zonerot.add(rotateBitmap(image1,180));
+                cal1.add(Calibrage.recherche(zonerot.get(2),image2,180));
             }
         });
         t4 = new Thread(new Runnable() {
             @Override
             public void run() {
 
-                zonerot.add(rotateBitmap(zone,270));
-                cal1.add(Calibrage.recherche(zonerot.get(3),image2));
+                zonerot.add(rotateBitmap(image1,270));
+                cal1.add(Calibrage.recherche(zonerot.get(3),image2,270));
             }
         });
         t1.start();
@@ -135,8 +135,7 @@ public class Page3 extends AppCompatActivity{
 
         t4.start();
 
-        for (Thread t : new Thread[] { t1,t2,t3,t4}) {*/
-        for (Thread t : new Thread[] { t1, t2}) {
+        for (Thread t : new Thread[] { t1,t2,t3,t4}) {
             try {
                 t.join();
             } catch (InterruptedException e) {
@@ -146,27 +145,27 @@ public class Page3 extends AppCompatActivity{
 
         //image2 = rotateBitmap(image2,180);
 
-        cal = Calibrage.recherche(zone,image2,0);//ConvolutionMatrix.findDifference(image1,image2);
-        textView3.setText(cal.toString());
+        //cal = Calibrage.recherche(zone,image2,0);//ConvolutionMatrix.findDifference(image1,image2);
+        //textView3.setText(cal.toString());
 
         //Test 19/03/2019
 
-        Detection detect = new Detection(image1);
-        detect.toCircle(50,50,20);
-        image1 = detect.getBmp();
+        //Detection detect = new Detection(image1);
+        //detect.toCircle(50,50,20);
+        //image1 = detect.getBmp();
 
 
         //
         result1.setImageBitmap(image1);
         result2.setImageBitmap(image2);
         result3.setImageBitmap(zone);
-
+        cal = Calibrage.MinCal(cal1);
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle("Title");
-        builder.setMessage(cal.toString());
+        builder.setMessage(cal1.toString());
         builder.setPositiveButton("Confirm",
                 new DialogInterface.OnClickListener() {
                     @Override
