@@ -308,118 +308,29 @@ public class ConvolutionMatrix {
         return (cmp / wh)*100;
     }
 
-    public static double pourcentErreur(@NotNull Bitmap firstImage, @NotNull Bitmap secondImage, int xx1, int yy1, int xx2, int yy2) {
+    public static double pourcentErreur(@NotNull Bitmap firstImage, @NotNull Bitmap secondImage, int x1, int y1, int x2, int y2) {
+        double wh = (x2 - x1) * (y2 - y1);
 
-        x1 = xx1;
-        x2 = xx2;
-        y1 = yy1;
-        y2 = yy2;
-        int midx = x1/2;
-        int midy = x2/2;
-        image1 = firstImage;
-        image2 = secondImage;
-        double wh = (x2-x1)*(y2-y1);
-        //final double cmp = 0;
-        Thread t1 = new Thread(new Runnable() {
-            public void run(){
-                for (int i = x1; i < x2/2; i++) {
-                    for (int j = y1; j < y2/2; j++) {
-                        int pixel = image1.getPixel(i-x1, j-y1);
-                        int redValue = Color.red(pixel);
-                        int blueValue = Color.blue(pixel);
-                        int greenValue = Color.green(pixel);
 
-                        int pixel2 = image2.getPixel(i, j);
-                        int redValue2 = Color.red(pixel2);
-                        int blueValue2 = Color.blue(pixel2);
-                        int greenValue2 = Color.green(pixel2);
-                        if (Math.abs(redValue2 - redValue) + Math.abs(blueValue2 - blueValue) + Math.abs(greenValue2 - greenValue) >= threashold) {
-                            cmp = cmp + 1;
-                        }
-                    }
+        for (int i = x1; i < x2; i++) {
+            for (int j = y1; j < y2; j++) {
+                int pixel = firstImage.getPixel(i - x1, j - y1);
+                int redValue = Color.red(pixel);
+                int blueValue = Color.blue(pixel);
+                int greenValue = Color.green(pixel);
+
+                int pixel2 = secondImage.getPixel(i, j);
+                int redValue2 = Color.red(pixel2);
+                int blueValue2 = Color.blue(pixel2);
+                int greenValue2 = Color.green(pixel2);
+                if (Math.abs(redValue2 - redValue) + Math.abs(blueValue2 - blueValue) + Math.abs(greenValue2 - greenValue) >= threashold) {
+                    cmp = cmp + 1;
                 }
             }
-        });
 
-        Thread t2 = new Thread(new Runnable() {
-            public void run(){
-                for (int i = x1; i < x2/2; i++) {
-                    for (int j = y2/2; j < y2; j++) {
-                        int pixel = image1.getPixel(i-x1, j-y1);
-                        int redValue = Color.red(pixel);
-                        int blueValue = Color.blue(pixel);
-                        int greenValue = Color.green(pixel);
-
-                        int pixel2 = image2.getPixel(i, j);
-                        int redValue2 = Color.red(pixel2);
-                        int blueValue2 = Color.blue(pixel2);
-                        int greenValue2 = Color.green(pixel2);
-                        if (Math.abs(redValue2 - redValue) + Math.abs(blueValue2 - blueValue) + Math.abs(greenValue2 - greenValue) >= threashold) {
-                            cmp++;
-                        }
-                    }
-                }
-            }
-        });
-
-        Thread t3 = new Thread(new Runnable() {
-            public void run(){
-                for (int i = x2/2; i < x2; i++) {
-                    for (int j = y1; j < y2/2; j++) {
-                        int pixel = image1.getPixel(i-x1, j-y1);
-                        int redValue = Color.red(pixel);
-                        int blueValue = Color.blue(pixel);
-                        int greenValue = Color.green(pixel);
-
-                        int pixel2 = image2.getPixel(i, j);
-                        int redValue2 = Color.red(pixel2);
-                        int blueValue2 = Color.blue(pixel2);
-                        int greenValue2 = Color.green(pixel2);
-                        if (Math.abs(redValue2 - redValue) + Math.abs(blueValue2 - blueValue) + Math.abs(greenValue2 - greenValue) >= threashold) {
-                            cmp++;
-                        }
-                    }
-                }
-            }
-        });
-
-        Thread t4 = new Thread(new Runnable() {
-            public void run(){
-                for (int i = x2/2+1; i < x2; i++) {
-                    for (int j = y2/2+1; j < y2; j++) {
-                        System.out.println(""+i + " i " + x1 +" : "+ j +" j " + y1);
-                        int pixel = image1.getPixel(i-x1, j-y1);
-                        int redValue = Color.red(pixel);
-                        int blueValue = Color.blue(pixel);
-                        int greenValue = Color.green(pixel);
-
-                        int pixel2 = image2.getPixel(i, j);
-                        int redValue2 = Color.red(pixel2);
-                        int blueValue2 = Color.blue(pixel2);
-                        int greenValue2 = Color.green(pixel2);
-                        if (Math.abs(redValue2 - redValue) + Math.abs(blueValue2 - blueValue) + Math.abs(greenValue2 - greenValue) >= threashold) {
-                            cmp++;
-                        }
-                    }
-                }
-            }
-        });
-
-        t1.start();
-        t2.start();
-        t3.start();
-        t4.start();
-
-        for (Thread t : new Thread[] { t1, t2,t3,t4}) {
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
+        return (cmp / wh) * 100;
 
-
-        return (cmp / wh)*100;
     }
-
 }
+
