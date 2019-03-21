@@ -31,8 +31,9 @@ public class Page3 extends AppCompatActivity{
 
     Bitmap image1 = createBitmap(Page2.transBitmap(1));
     Bitmap image2 = createBitmap(Page2.transBitmap(2));
-    Bitmap zone;
+    Calibrage c1,c2,c3,c4;
     String cal;
+    Boolean stop = false;
     TextView textView3;
     ImageView result1;
     ImageView result2;
@@ -76,7 +77,11 @@ public class Page3 extends AppCompatActivity{
                 public void run() {
 
                     zonerot.add(rotateBitmap(image1,0));
-                    cal1.add(Calibrage.recherche(zonerot.get(0),image2,0));
+                    c1 = Calibrage.recherche(zonerot.get(0),image2,0);
+                    cal1.add(c1);
+                    if(c1.getPourcent() <= 10)
+                        stop=true;
+
                 }
             });
             t2 = new Thread(new Runnable() {
@@ -84,7 +89,10 @@ public class Page3 extends AppCompatActivity{
                 public void run() {
 
                     zonerot.add(rotateBitmap(image1,90));
-                    cal1.add(Calibrage.recherche(zonerot.get(1),image2,90));
+                    c2 = Calibrage.recherche(zonerot.get(1),image2,90);
+                    cal1.add(c2);
+                    if(c2.getPourcent() <= 10)
+                        stop=true;
                 }
             });
             t3 = new Thread(new Runnable() {
@@ -92,7 +100,10 @@ public class Page3 extends AppCompatActivity{
                 public void run() {
 
                     zonerot.add(rotateBitmap(image1,180));
-                    cal1.add(Calibrage.recherche(zonerot.get(2),image2,180));
+                    c3 = Calibrage.recherche(zonerot.get(2),image2,180);
+                    cal1.add(c3);
+                    if(c3.getPourcent() <= 10)
+                        stop=true;
                 }
             });
             t4 = new Thread(new Runnable() {
@@ -100,7 +111,10 @@ public class Page3 extends AppCompatActivity{
                 public void run() {
 
                     zonerot.add(rotateBitmap(image1,270));
-                    cal1.add(Calibrage.recherche(zonerot.get(3),image2,270));
+                    c4 = Calibrage.recherche(zonerot.get(3),image2,270);
+                    cal1.add(c4);
+                    if(c4.getPourcent() <= 10)
+                        stop=true;
                 }
             });
             t1.start();
@@ -124,14 +138,14 @@ public class Page3 extends AppCompatActivity{
             }
 
             t4.start();
-
-            for (Thread t : new Thread[] { t1,t2,t3,t4}) {
+            for (Thread t : new Thread[]{t1, t2, t3, t4}) {
                 try {
                     t.join();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+
             cal = Calibrage.MinCal(cal1).toString();
         }
         else
@@ -151,7 +165,7 @@ public class Page3 extends AppCompatActivity{
         //
         result1.setImageBitmap(image1);
         result2.setImageBitmap(image2);
-        result3.setImageBitmap(zone);
+        result3.setImageBitmap(image1);
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

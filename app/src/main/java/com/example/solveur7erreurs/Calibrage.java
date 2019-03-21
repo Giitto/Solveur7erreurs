@@ -161,7 +161,7 @@ public class Calibrage {
         return height;
     }
 
-    private double getPourcent() {
+    public double getPourcent() {
         return pourcent;
     }
 
