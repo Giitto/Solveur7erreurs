@@ -66,7 +66,7 @@ public class Page3 extends AppCompatActivity{
         r2 = Math.abs(image1.getHeight()-image2.getHeight());
         if((r1 == r2) || (r1<20 || r2<20))
         {
-            if(image1.getWidth() >= 720 || image1.getHeight() >= 720)
+            while(image1.getWidth() >= 720 || image1.getHeight() >= 720)
             {
                 image1 = Bitmap.createScaledBitmap(image1, (int) (image1.getWidth()*0.5), (int) (image1.getHeight()*0.5) , true);
                 image2 = Bitmap.createScaledBitmap(image1, (int) (image2.getWidth()*0.5), (int) (image2.getHeight()*0.5) , true);
