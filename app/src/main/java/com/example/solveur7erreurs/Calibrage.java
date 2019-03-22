@@ -70,8 +70,6 @@ public class Calibrage {
             x2 = (x1*6)-z1;
             y2 = (y1*6)-z2;
 
-            zone3=zone(rotateBitmap(im1,-r));
-
             /*System.out.println("z1: " +z1 + " z2: " +z2);
             System.out.println("x1: " +x1 + " y1: " +y1);
             System.out.println("x2: " +x2 + " y2: " +y1);*/
