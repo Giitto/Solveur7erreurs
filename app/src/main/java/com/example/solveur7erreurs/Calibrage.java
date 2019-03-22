@@ -16,7 +16,8 @@ public class Calibrage {
 
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Calibrage{" +
                 "width=" + width +
                 ", height=" + height +
@@ -25,7 +26,8 @@ public class Calibrage {
                 '}';
     }
 
-    public Calibrage(int width, int height, int poucent, int rotation, int r2){
+    public Calibrage(int width, int height, int poucent, int rotation, int r2)
+    {
         this.width = width;
         this.height = height;
         this.pourcent = poucent;
@@ -33,7 +35,8 @@ public class Calibrage {
         this.r2 = r2;
     }
 
-   public static Calibrage MinCal(ArrayList<Calibrage> e){
+   public static Calibrage MinCal(ArrayList<Calibrage> e)
+   {
         Calibrage cal = e.get(0);
             for (int i=1 ; i<4 ; i++)
             {
@@ -43,7 +46,8 @@ public class Calibrage {
         return cal;
     }
 
-    public static Calibrage recherche(Bitmap im1, Bitmap im2, int r1){
+    public static Calibrage recherche(Bitmap im1, Bitmap im2, int r1)
+    {
         Bitmap zone2, zone3;
         double p = 100;
         double p1, p2;
@@ -95,7 +99,8 @@ public class Calibrage {
         return cal;
     }
 
-    public static Bitmap zone( Bitmap im1){
+    public static Bitmap zone(Bitmap im1)
+    {
         int h1 = im1.getHeight();
         int w1 = im1.getWidth();
         int y1 = (int) Math.floor(2*h1/5);
