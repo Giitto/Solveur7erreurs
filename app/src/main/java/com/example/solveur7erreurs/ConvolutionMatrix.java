@@ -2,11 +2,9 @@ package com.example.solveur7erreurs;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.util.Log;
 
 import org.jetbrains.annotations.NotNull;
 
-import static android.content.ContentValues.TAG;
 
 public class ConvolutionMatrix {
     private static final int SIZE = 5;
@@ -245,10 +243,6 @@ public class ConvolutionMatrix {
 
         int wthmin = Math.min(firstImage.getWidth(), secondImage.getWidth());
         int hgtmin = Math.min(firstImage.getHeight(), secondImage.getHeight());
-/*        if (firstImage.getWidth() != secondImage.getWidth()
-                || firstImage.getHeight() != secondImage.getHeight()) {
-            return bmp;
-       }*/
 
         for (int i = 0; i < wthmin; i++) {
             for (int j = 0; j < hgtmin; j++) {
@@ -277,10 +271,7 @@ public class ConvolutionMatrix {
         int hgtmin = Math.min(firstImage.getHeight(), secondImage.getHeight());
         double wh = wthmin * hgtmin;
         double cmp = 0;
-/*        if (firstImage.getWidth() != secondImage.getWidth()
-                || firstImage.getHeight() != secondImage.getHeight()) {
-            return bmp;
-       }*/
+
 
         for (int i = 0; i < wthmin; i++) {
             for (int j = 0; j < hgtmin; j++) {

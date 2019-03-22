@@ -64,7 +64,7 @@ public class Page3 extends AppCompatActivity{
 
         r1 = Math.abs(image1.getWidth()-image2.getWidth());
         r2 = Math.abs(image1.getHeight()-image2.getHeight());
-        if((r1 == r2) || (r1<20 || r2<20))
+        if((r1 == r2) || (r1<20 && r2<20))
         {
             while(image1.getWidth() >= 720 || image1.getHeight() >= 720)
             {
@@ -72,16 +72,23 @@ public class Page3 extends AppCompatActivity{
                 image2 = Bitmap.createScaledBitmap(image1, (int) (image2.getWidth()*0.5), (int) (image2.getHeight()*0.5) , true);
             }
 
+
+            image1 = ConvolutionMatrix.gaussianBlur5x5(image1);
+            image2 = ConvolutionMatrix.gaussianBlur5x5(image2);
+
             t1 = new Thread(new Runnable() {
                 @Override
                 public void run() {
 
                     zonerot.add(rotateBitmap(image1,0));
                     c1 = Calibrage.recherche(zonerot.get(0),image2,0);
+                    if(c1.getPourcent() <= 10) {
+                        stop = true;
+                        t2.interrupt();
+                        t3.interrupt();
+                        t4.interrupt();
+                    }
                     cal1.add(c1);
-                    if(c1.getPourcent() <= 10)
-                        stop=true;
-
                 }
             });
             t2 = new Thread(new Runnable() {
@@ -90,9 +97,13 @@ public class Page3 extends AppCompatActivity{
 
                     zonerot.add(rotateBitmap(image1,90));
                     c2 = Calibrage.recherche(zonerot.get(1),image2,90);
-                    cal1.add(c2);
-                    if(c2.getPourcent() <= 10)
+                    if(c2.getPourcent() <= 10){
                         stop=true;
+                        t1.interrupt();
+                        t3.interrupt();
+                        t4.interrupt();
+                    }
+                    cal1.add(c2);
                 }
             });
             t3 = new Thread(new Runnable() {
@@ -101,9 +112,13 @@ public class Page3 extends AppCompatActivity{
 
                     zonerot.add(rotateBitmap(image1,180));
                     c3 = Calibrage.recherche(zonerot.get(2),image2,180);
+                    if(c3.getPourcent() <= 10) {
+                        stop = true;
+                        t1.interrupt();
+                        t2.interrupt();
+                        t4.interrupt();
+                    }
                     cal1.add(c3);
-                    if(c3.getPourcent() <= 10)
-                        stop=true;
                 }
             });
             t4 = new Thread(new Runnable() {
@@ -112,9 +127,14 @@ public class Page3 extends AppCompatActivity{
 
                     zonerot.add(rotateBitmap(image1,270));
                     c4 = Calibrage.recherche(zonerot.get(3),image2,270);
+
+                    if(c4.getPourcent() <= 10) {
+                        stop = true;
+                        t1.interrupt();
+                        t2.interrupt();
+                        t3.interrupt();
+                    }
                     cal1.add(c4);
-                    if(c4.getPourcent() <= 10)
-                        stop=true;
                 }
             });
 
@@ -159,7 +179,7 @@ public class Page3 extends AppCompatActivity{
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle("Title");
-        builder.setMessage(cal);
+        builder.setMessage(cal1.toString());
         builder.setPositiveButton("Confirm",
                 new DialogInterface.OnClickListener() {
                     @Override
