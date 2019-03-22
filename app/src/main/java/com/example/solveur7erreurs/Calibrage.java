@@ -49,40 +49,34 @@ public class Calibrage {
     }
 
     public static Calibrage recherche(Bitmap im1, Bitmap im2, int r1){
-        Bitmap zone2;
-        Bitmap zone3=null;
-        double p ;
-        double p1 ;
-        double p2 = 100;
-        int x1, y1, x2, y2, z1, z2;
+        Bitmap zone2, zone3;
+        double p = 100;
+        double p1, p2;
+        int x1, y1, x2, y2, z1, z2, x11, y11, x12, y12, z11, z12;
         Calibrage cal = new Calibrage(0,0,100,0, r1);
         int r = 0;
         while(r<=5)
         /*for(int r=-1 ; r<=0 ; r++) */{
             zone2=zone(rotateBitmap(im1,r));
-            if(r!=0) {
-                zone3 = zone(rotateBitmap(im1, -r));
-            }
-            x1 = ((im2.getWidth()/9));
-            y1 = ((im2.getHeight()/9));
+            x1 = ((im2.getWidth()/5));
+            y1 = ((im2.getHeight()/5));
             z1 = zone2.getWidth();
             z2 = zone2.getHeight();
-            x2 = (x1*6)-z1;
-            y2 = (y1*6)-z2;
+            x2 = (x1*4)-z1;
+            y2 = (y1*4)-z2;
 
+            zone3=zone(rotateBitmap(im1,-r));
 
-            //System.out.println("z1: " +z1 + " z2: " +z2);
-            //System.out.println("x1: " +x1 + " y1: " +y1);
-            //System.out.println("x2: " +x2 + " y2: " +y1);
+            System.out.println("z1: " +z1 + " z2: " +z2);
+            System.out.println("x1: " +x1 + " y1: " +y1);
+            System.out.println("x2: " +x2 + " y2: " +y1);
 
             for (int i = x1; i <= x2; i++) {
                 for (int j = y1; j <= y2; j++) {
 //                    System.out.println( "i j" + i + " " +j);
                     p1 = ConvolutionMatrix.pourcentErreur(zone2, im2, i, j, i + z1, j + z2);
-                    if(r!=0) {
-                        p2 = ConvolutionMatrix.pourcentErreur(zone3, im2, i, j, i + z1, j + z2);
-                    }
-                        p = Math.min(p1, p2);
+                    p2 = ConvolutionMatrix.pourcentErreur(zone3, im2, i, j, i + z1, j + z2);
+                    p = Math.min(p1, p2);
 
                     if (p < cal.getPourcent()) {
                         cal.setPourcent(p);
@@ -104,9 +98,9 @@ public class Calibrage {
     public static Bitmap zone( Bitmap im1){
         int h1 = im1.getHeight();
         int w1 = im1.getWidth();
-        int y1 = (int) Math.floor(4*h1/9);
+        int y1 = (int) Math.floor(2*h1/5);
         int y2 = h1 - y1;
-        int x1 = (int) Math.floor(4*w1/9);
+        int x1 = (int) Math.floor(2*w1/5);
         int x2 = w1 - x1;
         int[] pixels = new int[(x2 - x1)*(y2 - y1)];
         im1.getPixels(pixels,0,x2-x1,x1,y1,x2-x1,y2-y1);
