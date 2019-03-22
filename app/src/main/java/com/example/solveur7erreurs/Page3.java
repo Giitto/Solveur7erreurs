@@ -64,13 +64,17 @@ public class Page3 extends AppCompatActivity{
 
         r1 = Math.abs(image1.getWidth()-image2.getWidth());
         r2 = Math.abs(image1.getHeight()-image2.getHeight());
-        if((r1 == r2) || (r1<20 || r2<20))
+        if((r1 == r2) || (r1<20 && r2<20))
         {
             while(image1.getWidth() >= 720 || image1.getHeight() >= 720)
             {
                 image1 = Bitmap.createScaledBitmap(image1, (int) (image1.getWidth()*0.5), (int) (image1.getHeight()*0.5) , true);
                 image2 = Bitmap.createScaledBitmap(image1, (int) (image2.getWidth()*0.5), (int) (image2.getHeight()*0.5) , true);
             }
+
+
+            image1 = ConvolutionMatrix.gaussianBlur5x5(image1);
+            image2 = ConvolutionMatrix.gaussianBlur5x5(image2);
 
             t1 = new Thread(new Runnable() {
                 @Override
@@ -159,7 +163,7 @@ public class Page3 extends AppCompatActivity{
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle("Title");
-        builder.setMessage(cal);
+        builder.setMessage(cal1.toString());
         builder.setPositiveButton("Confirm",
                 new DialogInterface.OnClickListener() {
                     @Override
