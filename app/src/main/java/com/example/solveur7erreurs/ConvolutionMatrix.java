@@ -15,13 +15,6 @@ public class ConvolutionMatrix {
     private double[][] Matrix;
     private double Factor = 1;
     private double Offset = 1;
-    private static int cmp = 0;
-    private static int x1 = 0;
-    private static int x2 = 0;
-    private static int y1 = 0;
-    private static int y2 = 0;
-    private static Bitmap image1;
-    private static Bitmap image2;
 
     public ConvolutionMatrix(int size) {
         Matrix = new double[size][size];
@@ -310,6 +303,7 @@ public class ConvolutionMatrix {
 
     public static double pourcentErreur(@NotNull Bitmap firstImage, @NotNull Bitmap secondImage, int x1, int y1, int x2, int y2) {
         double wh = (x2 - x1) * (y2 - y1);
+        double cmp = 0;
 
 
         for (int i = x1; i < x2; i++) {
@@ -324,7 +318,7 @@ public class ConvolutionMatrix {
                 int blueValue2 = Color.blue(pixel2);
                 int greenValue2 = Color.green(pixel2);
                 if (Math.abs(redValue2 - redValue) + Math.abs(blueValue2 - blueValue) + Math.abs(greenValue2 - greenValue) >= threashold) {
-                    cmp = cmp + 1;
+                    cmp++;
                 }
             }
 
