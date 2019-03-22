@@ -3,6 +3,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
@@ -15,6 +17,7 @@ public class Calibrage {
     private int r2;
 
 
+    @NotNull
     @Override
     public String toString() {
         return "Calibrage{" +
@@ -114,14 +117,6 @@ public class Calibrage {
 
     }
 
-    public static Bitmap calibrage1(Bitmap im1, Bitmap im2)
-    {
-        while(ConvolutionMatrix.pourcentErreur(im1,im2) !=0)
-        {
-            im2 = rotateBitmap(im2,90);
-        }
-        return ConvolutionMatrix.findDifference(im1,im2);
-    }
 
     public static Bitmap rotateBitmap(Bitmap source, float angle)
     {
@@ -159,6 +154,10 @@ public class Calibrage {
 
     private int getWidth() {
         return width;
+    }
+
+    private int getR2(){
+        return r2;
     }
 
 
