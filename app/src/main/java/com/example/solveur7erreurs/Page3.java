@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -31,7 +34,7 @@ public class Page3 extends AppCompatActivity{
     ImageView result3;
     ArrayList<Bitmap> zonerot = new ArrayList<>();
     ArrayList<Calibrage> cal1 = new ArrayList<>();
-    int r1,r2,r3,r4;
+    int x,y,r1,r2,r3,r4,ro=0;
     Thread t1,t2,t3,t4;
     Button button;
 
@@ -112,7 +115,7 @@ public class Page3 extends AppCompatActivity{
                 }
             });
 
-            for (Thread t : new Thread[]{t1, t2, t3, t4}) {
+            for (Thread t : new Thread[]{t1,t2,t3,t4}) {
                 try {
                     sleep(100);
                     t.start();
@@ -120,7 +123,7 @@ public class Page3 extends AppCompatActivity{
                     e.printStackTrace();
                 }
             }
-            for (Thread t : new Thread[]{t1, t2, t3, t4}) {
+            for (Thread t : new Thread[]{t1,t2,t3,t4}) {
                 try {
                     t.join();
                 } catch (InterruptedException e) {
@@ -129,6 +132,10 @@ public class Page3 extends AppCompatActivity{
             }
 
             cal = Calibrage.MinCal(cal1).toString();
+            Calibrage cal2 = Calibrage.MinCal(cal1);
+            ro = cal2.getRotation();
+            x = cal2.getWidth();
+            y = cal2.getHeight();
         }
         else
         {
@@ -137,8 +144,37 @@ public class Page3 extends AppCompatActivity{
 
         result1.setImageBitmap(image1);
         result2.setImageBitmap(image2);
-        result3.setImageBitmap(image1);
+        Bitmap test = image1.copy(image1.getConfig(),true);
+///////////////////////////////////////////////////////////////////////////////////////////////
+        Canvas canvas = new Canvas(test);
 
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setDither(true);
+        paint.setFilterBitmap(true);
+
+        Matrix matrix = new Matrix();
+
+        matrix.setRotate(
+                -ro, // degrees
+                 x, // px
+                y // py
+        );
+
+        matrix.postTranslate(
+                canvas.getWidth() / 2 - x,
+                canvas.getHeight() / 2 - y
+        );
+
+        canvas.drawBitmap(
+                image2, // Bitmap
+                matrix, // Matrix
+                paint // Paint
+        );
+
+        result3.setImageBitmap(test);
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);

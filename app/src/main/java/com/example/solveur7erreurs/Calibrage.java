@@ -85,8 +85,14 @@ public class Calibrage {
 
                     if (p < cal.getPourcent()) {
                         cal.setPourcent(p);
-                        cal.setHeight(j);
-                        cal.setWidth(i);
+                        if(p==p1) {
+                            cal.setHeight(j + ((zone2.getHeight()) / 2));
+                            cal.setWidth(i + ((zone2.getWidth()) / 2));
+                        }
+                        if(p==p2){
+                            cal.setHeight(j + ((zone3.getHeight()) / 2));
+                            cal.setWidth(i + ((zone3.getWidth()) / 2));
+                        }
                         if (p == p1) {
                             cal.setRotation(r + r1);
                         }else{
@@ -151,7 +157,7 @@ public class Calibrage {
     }
 
 
-    private int getWidth() {
+    public int getWidth() {
         return width;
     }
 
@@ -161,7 +167,7 @@ public class Calibrage {
 
 
 
-    private int getHeight() {
+    public int getHeight() {
         return height;
     }
 
@@ -169,7 +175,7 @@ public class Calibrage {
         return pourcent;
     }
 
-    private int getRotation() {
+    public int getRotation() {
         return rotation;
     }
 }
