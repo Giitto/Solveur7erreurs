@@ -58,12 +58,16 @@ public class Page3 extends AppCompatActivity{
             while(image1.getWidth() >= 720 || image1.getHeight() >= 720)
             {
                 image1 = Bitmap.createScaledBitmap(image1, (int) (image1.getWidth()*0.5), (int) (image1.getHeight()*0.5) , true);
-                image2 = Bitmap.createScaledBitmap(image1, (int) (image2.getWidth()*0.5), (int) (image2.getHeight()*0.5) , true);
+                image2 = Bitmap.createScaledBitmap(image2, (int) (image2.getWidth()*0.5), (int) (image2.getHeight()*0.5) , true);
+                image1 = Calibrage.Compress(image1,50);
+                image2 = Calibrage.Compress(image2,50);
+
             }
 
-
+            System.out.println("conv");
             image1 = ConvolutionMatrix.gaussianBlur5x5(image1);
             image2 = ConvolutionMatrix.gaussianBlur5x5(image2);
+            System.out.println("thread");
 
             t1 = new Thread(new Runnable() {
                 @Override
@@ -144,35 +148,10 @@ public class Page3 extends AppCompatActivity{
 
         result1.setImageBitmap(image1);
         result2.setImageBitmap(image2);
-        Bitmap test = image1.copy(image1.getConfig(),true);
-///////////////////////////////////////////////////////////////////////////////////////////////
-        Canvas canvas = new Canvas(test);
+        Bitmap test = Calibrage.superposer(image1, image2, ro, x, y);
 
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setDither(true);
-        paint.setFilterBitmap(true);
 
-        Matrix matrix = new Matrix();
-
-        matrix.setRotate(
-                -ro, // degrees
-                 x, // px
-                y // py
-        );
-
-        matrix.postTranslate(
-                canvas.getWidth() / 2 - x,
-                canvas.getHeight() / 2 - y
-        );
-
-        canvas.drawBitmap(
-                image2, // Bitmap
-                matrix, // Matrix
-                paint // Paint
-        );
-
-        result3.setImageBitmap(test);
+            result3.setImageBitmap(test);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 

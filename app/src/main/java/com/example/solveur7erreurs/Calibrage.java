@@ -1,7 +1,9 @@
 package com.example.solveur7erreurs;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -40,7 +42,8 @@ public class Calibrage {
 
     public static Calibrage MinCal(ArrayList<Calibrage> e){
         Calibrage cal = e.get(0);
-            for (int i=1 ; i<4 ; i++)
+        int taille = e.size();
+            for (int i=1 ; i<taille ; i++)
             {
                 if(cal.getPourcent() > e.get(i).getPourcent())
                     cal = e.get(i);
@@ -54,25 +57,25 @@ public class Calibrage {
         double p = 100;
         double p1;
         double p2= 100;
-        int x1, y1, x2, y2, z1, z2, x11, y11, x12, y12, z11, z12;
+        int x1, y1, x2, y2, z1, z2, x,y,h,w;
         Calibrage cal = new Calibrage(0,0,100,0, r1);
         int r = 0;
-        while(r<=5)
+        while(r<=1)
         /*for(int r=-1 ; r<=0 ; r++) */{
             zone2=zone(rotateBitmap(im1,r));
             if(r!=0) {
                 zone3 = zone(rotateBitmap(im1, -r));
             }
-            x1 = ((im2.getWidth()/9));
-            y1 = ((im2.getHeight()/9));
+            x1 = 3*((im2.getWidth()/9));
+            y1 = 3*((im2.getHeight()/9));
             z1 = zone2.getWidth();
             z2 = zone2.getHeight();
-            x2 = (x1*6)-z1;
-            y2 = (y1*6)-z2;
+            x2 = (x1*2)-z1;
+            y2 = (y1*2)-z2;
 
-            /*System.out.println("z1: " +z1 + " z2: " +z2);
+            System.out.println("z1: " +z1 + " z2: " +z2);
             System.out.println("x1: " +x1 + " y1: " +y1);
-            System.out.println("x2: " +x2 + " y2: " +y1);*/
+            System.out.println("x2: " +x2 + " y2: " +y1);
 
             for (int i = x1; i <= x2; i++) {
                 for (int j = y1; j <= y2; j++) {
@@ -86,12 +89,32 @@ public class Calibrage {
                     if (p < cal.getPourcent()) {
                         cal.setPourcent(p);
                         if(p==p1) {
-                            cal.setHeight(j + ((zone2.getHeight()) / 2));
-                            cal.setWidth(i + ((zone2.getWidth()) / 2));
+                            x=i + ((zone2.getHeight()) / 2);
+                            y=j + ((zone2.getHeight()) / 2);
+                            w=rotateBitmap(im1,r).getWidth()/2;
+                            h=rotateBitmap(im1,r).getHeight()/2;
+                            if(w>x)
+                                cal.setWidth(-x);
+                            if(w<=x)
+                                cal.setWidth(x);
+                            if(h>y)
+                                cal.setHeight(-y);
+                            if(h<=y)
+                                cal.setHeight(y);
                         }
                         if(p==p2){
-                            cal.setHeight(j + ((zone3.getHeight()) / 2));
-                            cal.setWidth(i + ((zone3.getWidth()) / 2));
+                            x=i + ((zone3.getHeight()) / 2);
+                            y=j + ((zone3.getHeight()) / 2);
+                            w=rotateBitmap(im1,-r).getWidth()/2;
+                            h=rotateBitmap(im1,-r).getHeight()/2;
+                            if(w>x)
+                                cal.setWidth(-x);
+                            if(w<=x)
+                                cal.setWidth(x);
+                            if(h>y)
+                                cal.setHeight(-y);
+                            if(h<=y)
+                                cal.setHeight(y);
                         }
                         if (p == p1) {
                             cal.setRotation(r + r1);
@@ -101,9 +124,44 @@ public class Calibrage {
                         if (p==0) return cal;
                     }
                 }
-            }r++;
+            }
+            System.out.println(r);
+            r++;
+
         }
         return cal;
+    }
+
+    public static Bitmap superposer(Bitmap im1, Bitmap im2, int ro, int x, int y){
+        Bitmap fin = im1.copy(im1.getConfig(),true);
+
+        Canvas canvas = new Canvas(fin);
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setDither(true);
+        paint.setFilterBitmap(true);
+
+        Matrix matrix = new Matrix();
+
+        matrix.setRotate(
+                -ro, // degrees
+                (im2.getWidth()/2), // px
+                (im2.getHeight()/2) // py
+        );
+
+        matrix.postTranslate(
+                (canvas.getWidth()/2) + x,
+                (canvas.getHeight()/2) + y
+        );
+
+        canvas.drawBitmap(
+                im2, // Bitmap
+                matrix, // Matrix
+                paint // Paint
+        );
+
+        return fin;
     }
 
     public static Bitmap zone( Bitmap im1){
