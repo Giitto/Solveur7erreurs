@@ -150,7 +150,7 @@ public class Page3 extends AppCompatActivity{
         result2.setImageBitmap(image2);
         Bitmap test = Calibrage.superposer(image1, image2, ro, x, y);
 
-
+        test = ConvolutionMatrix.findDifference(image1,test);
             result3.setImageBitmap(test);
 
 /////////////////////////////////////////////////////////////////////////////////////////////

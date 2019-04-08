@@ -46,6 +46,7 @@ public class Calibrage {
             for (int i=1 ; i<taille ; i++)
             {
                 if(cal.getPourcent() > e.get(i).getPourcent())
+
                     cal = e.get(i);
             }
         return cal;
@@ -60,7 +61,7 @@ public class Calibrage {
         int x1, y1, x2, y2, z1, z2, x,y,h,w;
         Calibrage cal = new Calibrage(0,0,100,0, r1);
         int r = 0;
-        while(r<=1)
+        while(r<=5)
         /*for(int r=-1 ; r<=0 ; r++) */{
             zone2=zone(rotateBitmap(im1,r));
             if(r!=0) {
@@ -73,9 +74,9 @@ public class Calibrage {
             x2 = (x1*2)-z1;
             y2 = (y1*2)-z2;
 
-            System.out.println("z1: " +z1 + " z2: " +z2);
+            /*System.out.println("z1: " +z1 + " z2: " +z2);
             System.out.println("x1: " +x1 + " y1: " +y1);
-            System.out.println("x2: " +x2 + " y2: " +y1);
+            System.out.println("x2: " +x2 + " y2: " +y1);*/
 
             for (int i = x1; i <= x2; i++) {
                 for (int j = y1; j <= y2; j++) {
@@ -89,32 +90,17 @@ public class Calibrage {
                     if (p < cal.getPourcent()) {
                         cal.setPourcent(p);
                         if(p==p1) {
-                            x=i + ((zone2.getHeight()) / 2);
+                            x=i + ((zone2.getWidth()) / 2);
                             y=j + ((zone2.getHeight()) / 2);
-                            w=rotateBitmap(im1,r).getWidth()/2;
-                            h=rotateBitmap(im1,r).getHeight()/2;
-                            if(w>x)
-                                cal.setWidth(-x);
-                            if(w<=x)
                                 cal.setWidth(x);
-                            if(h>y)
-                                cal.setHeight(-y);
-                            if(h<=y)
                                 cal.setHeight(y);
+
                         }
                         if(p==p2){
-                            x=i + ((zone3.getHeight()) / 2);
+                            x=i + ((zone3.getWidth()) / 2);
                             y=j + ((zone3.getHeight()) / 2);
-                            w=rotateBitmap(im1,-r).getWidth()/2;
-                            h=rotateBitmap(im1,-r).getHeight()/2;
-                            if(w>x)
-                                cal.setWidth(-x);
-                            if(w<=x)
-                                cal.setWidth(x);
-                            if(h>y)
-                                cal.setHeight(-y);
-                            if(h<=y)
-                                cal.setHeight(y);
+                            cal.setWidth(x);
+                            cal.setHeight(y);
                         }
                         if (p == p1) {
                             cal.setRotation(r + r1);
@@ -151,8 +137,8 @@ public class Calibrage {
         );
 
         matrix.postTranslate(
-                (canvas.getWidth()/2) + x,
-                (canvas.getHeight()/2) + y
+                ((canvas.getWidth()/2) - x),
+                ((canvas.getHeight()/2) - y)
         );
 
         canvas.drawBitmap(
