@@ -61,7 +61,7 @@ public class Calibrage {
         int x1, y1, x2, y2, z1, z2, x,y,h,w;
         Calibrage cal = new Calibrage(0,0,100,0, r1);
         int r = 0;
-        while(r<=5)
+        while(r<=0)
         /*for(int r=-1 ; r<=0 ; r++) */{
             zone2=zone(rotateBitmap(im1,r));
             if(r!=0) {
