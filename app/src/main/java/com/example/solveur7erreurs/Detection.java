@@ -25,14 +25,18 @@ public class Detection {
     private int isAnError =5;
     private int tabSommeParGroupe [][];
     private int dejaVisitee[][];
-    private int groupeDesSeptsErreurs [][] = new int[7][4];  //7erreurs max, on retiendra les 4 positions extremes N,S,E,O
+    private int nombreErreurs = 14;
+    private int groupeDesSeptsErreurs [][] = new int[nombreErreurs][4];  //7erreurs max, on retiendra les 4 positions extremes N,S,E,O
+    int tabRayon[][] = new int[nombreErreurs][3];
+
 
 
     public Detection(Bitmap image1, Bitmap image2)
     {
         this.paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.RED);
+        paint.setColor(Color.BLUE);
+        paint.setStrokeWidth(5);
         this.bmp1 = image1.copy(image1.getConfig(), true);
         this.bmp2 = image2.copy(image2.getConfig(), true);
 
@@ -56,6 +60,11 @@ public class Detection {
         binaryDiff();
         groupage();
         localisationDesErreurs();
+        for(int rayon[] :tabRayon){
+            toCircle(rayon[0],rayon[1],rayon[2]);
+
+        }
+
         return bmp2;
     }
 
@@ -140,8 +149,9 @@ public class Detection {
                     groupeDesSeptsErreurs[groupeNumero][2]=j;//S
                     groupeDesSeptsErreurs[groupeNumero][3]=i;//E
                     checkAlentour(groupeNumero,i,j,wthReduit-1,hgtReduit-1);    //On parcours toute les erreurs qui lui sont collées
-                    groupeNumero++;
-                    groupeNumero=groupeNumero%7;///////test
+                    if(groupeNumero<nombreErreurs-1)
+                        groupeNumero++;
+                    ;
                 }
             }
         }
@@ -152,37 +162,35 @@ public class Detection {
 
         int tabGroupTmp[];
 
-        for(groupeNumero =0; groupeNumero<7; groupeNumero ++){
+        for(groupeNumero =0; groupeNumero<nombreErreurs; groupeNumero ++){
 
             tabGroupTmp = groupeDesSeptsErreurs[groupeNumero];
 
             centreX = ((int)((tabGroupTmp[1]+tabGroupTmp[3]))) * ((int)(valeurDeSubdivision/2));
             centreY = ((int)((tabGroupTmp[0]+tabGroupTmp[2]))) * ((int)(valeurDeSubdivision/2));
-            rayon = Math.max((int)((tabGroupTmp[1]-tabGroupTmp[3])) , (int)((tabGroupTmp[2]-tabGroupTmp[0]))) ;
-            rayon += (int)Math.sqrt(valeurDeSubdivision);
-            rayon = rayon * ((int)(valeurDeSubdivision/2));
+
+            if(centreX==0 && centreY==0)
+                rayon=0;
+            else{
+                rayon = Math.max((int)((tabGroupTmp[1]-tabGroupTmp[3])) , (int)((tabGroupTmp[2]-tabGroupTmp[0]))) ;
+                rayon += (int)Math.sqrt(valeurDeSubdivision);
+                rayon = rayon * ((int)(valeurDeSubdivision/2));
+            }
 
             System.out.println("info tab groupe: " + tabGroupTmp[0]+ " "+ tabGroupTmp[1]+ " "+ tabGroupTmp[2] +" "+ tabGroupTmp[3]);
             System.out.println(centreX + " " + centreY + " "+ rayon);
-            toCircle(centreX,centreY,rayon);
 
         }
     }
 
 
     public void checkAlentour(int groupeNumero, int i, int j, int iMax, int jMax){
-        //System.out.println(i + " " + j + " " + iMax + " " + jMax);
-        //System.out.println("x min: "+groupeDesSeptsErreurs[groupeNumero][3] );
-
-
 
         if(tabSommeParGroupe[i][j]==1 && dejaVisitee[i][j]!=1)
         {
             dejaVisitee[i][j]=1;
             checkCardinalite(groupeNumero,i,j);
-            if(i<iMax){
-                checkAlentour(groupeNumero,i+1,j,iMax,jMax);
-            }
+            if(i<iMax)
             if(j<jMax){
                 checkAlentour(groupeNumero,i,j+1,iMax,jMax);
             }
@@ -218,6 +226,10 @@ public class Detection {
                 tabTMP[3]=i;
 
         }
+
+    }
+
+    public void compareRayon(){
 
     }
 
