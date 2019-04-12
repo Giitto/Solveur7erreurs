@@ -175,12 +175,17 @@ public class Detection {
                 rayon = Math.max((int)((tabGroupTmp[1]-tabGroupTmp[3])) , (int)((tabGroupTmp[2]-tabGroupTmp[0]))) ;
                 rayon += (int)Math.sqrt(valeurDeSubdivision);
                 rayon = rayon * ((int)(valeurDeSubdivision/2));
+
             }
+            tabRayon[groupeNumero][0]=centreX;
+            tabRayon[groupeNumero][1]=centreY;
+            tabRayon[groupeNumero][2]=rayon;
 
             System.out.println("info tab groupe: " + tabGroupTmp[0]+ " "+ tabGroupTmp[1]+ " "+ tabGroupTmp[2] +" "+ tabGroupTmp[3]);
             System.out.println(centreX + " " + centreY + " "+ rayon);
 
         }
+        compareRayon();///a terminer
     }
 
 
