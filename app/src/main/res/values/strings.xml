@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Solveur7erreurs</string>
     <string name="play">PLAY</string>
-    <string name="ExplicationP2">Explication sur le choix des images</string>
+    <string name="ExplicationP2">Pour comparer deux images, sélectionnez chacune des images
+        à l\'aide des boutons \"choisir\" puis lancez l\'algorithme de détection à l\'aide du bouton
+        \"lancer comparaison\".\nVeillez à bien sélectionner deux images comparables.</string>
     <string name="IMAGE2">IMAGE2</string>
     <string name="IMAGE1">IMAGE1</string>
     <string name="LANCER">Lancer Comparaison</string>
