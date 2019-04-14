@@ -119,7 +119,7 @@ public class Page3 extends AppCompatActivity{
                 }
             });
 
-            for (Thread t : new Thread[]{t1}) {
+            for (Thread t : new Thread[]{t1, t2, t3, t4}) {
                 try {
                     sleep(100);
                     t.start();
@@ -127,7 +127,7 @@ public class Page3 extends AppCompatActivity{
                     e.printStackTrace();
                 }
             }
-            for (Thread t : new Thread[]{t1}) {
+            for (Thread t : new Thread[]{t1, t2, t3, t4}) {
                 try {
                     t.join();
                 } catch (InterruptedException e) {
@@ -146,15 +146,16 @@ public class Page3 extends AppCompatActivity{
             cal = "Les photos ne sont pas comparable";
         }
 
-        Detection d = new Detection(image1, image2);
-        Bitmap tmp = d.laTotaleChef();
 
-        result1.setImageBitmap(image1);
-        result2.setImageBitmap(d.getBmp1());
+
+
         Bitmap test = Calibrage.superposer(image1, image2, ro, x, y);
-
-        test = ConvolutionMatrix.findDifference(image1,test);
+        Detection d = new Detection(image1, test);
+        Bitmap tmp = d.laTotaleChef();
+        //test = ConvolutionMatrix.findDifference(image1,test);
         //result3.setImageBitmap(test);
+        result1.setImageBitmap(image1);
+        result2.setImageBitmap(image2);
         result3.setImageBitmap(tmp);
 
 /////////////////////////////////////////////////////////////////////////////////////////////
