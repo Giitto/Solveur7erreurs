@@ -10,12 +10,14 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="299dp"
-        android:layout_height="123dp"
+        android:layout_width="352dp"
+        android:layout_height="173dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:text="@string/ExplicationP2"
+        android:textColor="#000"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.531"
         app:layout_constraintStart_toStartOf="parent"
