@@ -5,13 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import org.jetbrains.annotations.NotNull;
-
-import static android.graphics.Bitmap.createBitmap;
-
 public class Detection {
 
-    private static final int threashold = 30;
+    private static int threashold;
 
     private Paint paint;
     private Canvas canvas;
@@ -21,14 +17,19 @@ public class Detection {
     private int tab[][];
     private int wthmin;
     private int hgtmin;
-    private int valeurDeSubdivision = 20;
-    private int isAnError =5;
+    private int valeurDeSubdivision;
+    private int isAnError ;
     private int tabSommeParGroupe [][];
     private int dejaVisitee[][];
     private int nombreErreurs = 14;
     private int groupeDesSeptsErreurs [][] = new int[nombreErreurs][4];  //7erreurs max, on retiendra les 4 positions extremes N,S,E,O
-    int tabRayon[][] = new int[nombreErreurs][3];
+    private int tabRayon[][] = new int[nombreErreurs][3];
 
+    /**
+     * Futur developpement:
+     *  - trouver une formule viable pour valeurDeSubdivision & isAnError
+     *  - Proposer à l'utilisateur d'afficher ou non toutes les erreurs ( 7 ou 14) cf. laTotaleChef -> unSurDeux
+     */
 
 
     public Detection(Bitmap image1, Bitmap image2)
@@ -43,9 +44,16 @@ public class Detection {
         this.canvas = new Canvas(bmp2);
         this.wthmin = Math.min(bmp1.getWidth(), bmp2.getWidth());
         this.hgtmin = Math.min(bmp1.getHeight(), bmp2.getHeight());
+
+        float valSubdivAuxilaire = (float) 3.6;
+        this.valeurDeSubdivision = (wthmin * hgtmin)/8400;
+        this.isAnError = (int) (valeurDeSubdivision/valSubdivAuxilaire);
+        Detection.threashold = valeurDeSubdivision + ((valeurDeSubdivision * 2)/3);
+        System.out.println("Valeur de Subdivision: " + valeurDeSubdivision+ ", valeur seuil d'erreur: "+ isAnError + ", Threashold: " + Detection.threashold);
+
         this.tab = new int[wthmin][hgtmin];
-        this.dejaVisitee = new int[(int) wthmin/valeurDeSubdivision][(int) hgtmin/valeurDeSubdivision];
-        this.tabSommeParGroupe = new int[(int) wthmin/valeurDeSubdivision][(int) hgtmin/valeurDeSubdivision];
+        this.dejaVisitee = new int[ wthmin/valeurDeSubdivision][hgtmin/valeurDeSubdivision];
+        this.tabSommeParGroupe = new int[ wthmin/valeurDeSubdivision][ hgtmin/valeurDeSubdivision];
 
     }
 
@@ -60,9 +68,11 @@ public class Detection {
         binaryDiff();
         groupage();
         localisationDesErreurs();
+        int unSurDeux =0;
         for(int rayon[] :tabRayon){
-            toCircle(rayon[0],rayon[1],rayon[2]);
-
+           if(unSurDeux==0)
+                toCircle(rayon[0],rayon[1],rayon[2]);
+            unSurDeux = (unSurDeux+1)%2;
         }
 
         return bmp2;
@@ -88,14 +98,10 @@ public class Detection {
                 if (Math.abs(redValue2 - redValue) + Math.abs(blueValue2 - blueValue) + Math.abs(greenValue2 - greenValue) >= threashold)
                 {
                     tab[i][j] = 1;
-                    bmp1.setPixel(i, j, Color.YELLOW);//test
-
                 }
                 else
                 {
                     tab[i][j] = 0;
-                    bmp1.setPixel(i, j, Color.GREEN);//test
-
                 }
                 if(j%valeurDeSubdivision==0)
                     bmp1.setPixel(i,j,Color.BLACK);//test
@@ -108,8 +114,8 @@ public class Detection {
 
     public void groupage()
     {
-        int wthReduit = (int) wthmin/valeurDeSubdivision;
-        int hgtReduit = (int) hgtmin/valeurDeSubdivision;
+        int wthReduit = wthmin/valeurDeSubdivision;
+        int hgtReduit = hgtmin/valeurDeSubdivision;
 
         int sommeParGroupeDePixel =0;
 
@@ -118,12 +124,14 @@ public class Detection {
             for (int j = 0; j < hgtReduit; j++)
             {
 
-                for(int k =0; k<valeurDeSubdivision; k++){
-                    for(int l=0; l<valeurDeSubdivision; l++){
+                for(int k =0; k<valeurDeSubdivision; k++)
+                {
+                    for(int l=0; l<valeurDeSubdivision; l++)
+                    {
                         sommeParGroupeDePixel += tab[(i*valeurDeSubdivision)+k] [(j*valeurDeSubdivision)+l];
                     }
                 }
-                sommeParGroupeDePixel = (int) (sommeParGroupeDePixel/(valeurDeSubdivision));
+                sommeParGroupeDePixel = sommeParGroupeDePixel/valeurDeSubdivision;
 
                 if(sommeParGroupeDePixel<isAnError)
                     tabSommeParGroupe[i][j] = 0;
@@ -138,8 +146,8 @@ public class Detection {
 
     public void localisationDesErreurs(){
 
-        int wthReduit = (int) wthmin/valeurDeSubdivision;
-        int hgtReduit = (int) hgtmin/valeurDeSubdivision;
+        int wthReduit =  wthmin/valeurDeSubdivision;
+        int hgtReduit =  hgtmin/valeurDeSubdivision;
         int groupeNumero=0;
         for(int i = 0; i< wthReduit; i++){
             for(int j = 0; j<hgtReduit; j++){
@@ -151,14 +159,13 @@ public class Detection {
                     checkAlentour(groupeNumero,i,j,wthReduit-1,hgtReduit-1);    //On parcours toute les erreurs qui lui sont collées
                     if(groupeNumero<nombreErreurs-1)
                         groupeNumero++;
-                    ;
                 }
             }
         }
 
-        int centreX =0;
-        int centreY =0;
-        int rayon =0;
+        int centreX;
+        int centreY;
+        int rayon;
 
         int tabGroupTmp[];
 
@@ -166,26 +173,21 @@ public class Detection {
 
             tabGroupTmp = groupeDesSeptsErreurs[groupeNumero];
 
-            centreX = ((int)((tabGroupTmp[1]+tabGroupTmp[3]))) * ((int)(valeurDeSubdivision/2));
-            centreY = ((int)((tabGroupTmp[0]+tabGroupTmp[2]))) * ((int)(valeurDeSubdivision/2));
+            centreX = (tabGroupTmp[1]+tabGroupTmp[3]) * (valeurDeSubdivision/2);
+            centreY = (tabGroupTmp[0]+tabGroupTmp[2]) * (valeurDeSubdivision/2);
 
             if(centreX==0 && centreY==0)
                 rayon=0;
             else{
-                rayon = Math.max((int)((tabGroupTmp[1]-tabGroupTmp[3])) , (int)((tabGroupTmp[2]-tabGroupTmp[0]))) ;
+                rayon = Math.max(((tabGroupTmp[1]-tabGroupTmp[3])), ((tabGroupTmp[2]-tabGroupTmp[0]))) ;
                 rayon += (int)Math.sqrt(valeurDeSubdivision);
-                rayon = rayon * ((int)(valeurDeSubdivision/2));
+                rayon = rayon * (valeurDeSubdivision/2);
 
             }
             tabRayon[groupeNumero][0]=centreX;
             tabRayon[groupeNumero][1]=centreY;
             tabRayon[groupeNumero][2]=rayon;
-
-            System.out.println("info tab groupe: " + tabGroupTmp[0]+ " "+ tabGroupTmp[1]+ " "+ tabGroupTmp[2] +" "+ tabGroupTmp[3]);
-            System.out.println(centreX + " " + centreY + " "+ rayon);
-
         }
-        compareRayon();///a terminer
     }
 
 
@@ -209,11 +211,10 @@ public class Detection {
 
     }
 
+    /**
+     * On cherche ici à determiner les 4 coins d'un carré qui contiendrait parfaitement notre erreur
+     */
     public void checkCardinalite(int numGroupe, int i, int j){
-        /**
-         *
-         * On cherche ici à determiner les 4 coins d'un carré qui contiendrait parfaitement notre erreur
-         */
 
         int tabTMP[] = groupeDesSeptsErreurs[numGroupe]; //On prends dans une variable tampon le sous-tableau de int correspondant a ce groupe d'erreur
         if(tabTMP!=null){
@@ -233,92 +234,6 @@ public class Detection {
         }
 
     }
-
-    public void compareRayon(){
-
-    }
-
-
-
-
-    /*public void quadrillage()
-    {
-        int cmp1 = 0, cmp2 = 0, cmp3 = 0, cmp4 = 0;
-
-
-        for (int i = 0; i < wthmin/2; i++)
-        {
-
-        for (int i = 0; i < wthmin/2; i++)
-        {
-            for (int j = 0; j < hgtmin/2; j++)
-            {
-                if(tab[i][j] == 1)
-                {
-                    cmp1++;
-                }
-            }
-        }
-        cmp1 = cmp1 / ((wthmin/2)*(hgtmin/2));
-
-        for (int i = 0; wthmin/2 < wthmin; i++)
-        {
-            for (int j = 0; j < hgtmin / 2; j++)
-            {
-                if(tab[i][j] == 1)
-                {
-                    cmp2++;
-                }
-            }
-        }
-        cmp2 = cmp2 / ((wthmin/2)*(hgtmin/2));
-
-        for (int i = 0; i < wthmin/2; i++)
-        {
-            for (int j = 0; hgtmin/2 < hgtmin; j++)
-            {
-                if(tab[i][j] == 1)
-                {
-                    cmp3++;
-                }
-            }
-        }
-        cmp3 = cmp3 / ((wthmin/2)*(hgtmin/2));
-
-        for (int i = 0; wthmin/2 < wthmin; i++)
-        {
-            for (int j = 0; hgtmin/2 < hgtmin; j++)
-            {
-                if(tab[i][j] == 1)
-                {
-                    cmp4++;
-                }
-            }
-        }
-        cmp4 = cmp4 / ((wthmin/2)*(hgtmin/2));
-
-    }*/
-
-/////POUR LES TEST/////
-    public Bitmap getBmp1(){
-        return bmp1;
-    }
-
-
-    public void afficher()
-    {
-        for (int i = 0; i <this.wthmin/valeurDeSubdivision; i++)
-        {
-            for (int j = 0; j <this.hgtmin/valeurDeSubdivision; j++)
-            {
-                System.out.print(tabSommeParGroupe[i][j] + " ");
-            }
-            System.out.println();
-        }
-
-    }
-
-
 
 
 }
